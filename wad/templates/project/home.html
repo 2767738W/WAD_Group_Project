@@ -92,16 +92,16 @@
 
     <div class="navbar">
         <div class="nav-left">
-            <a href="/">Home</a> 
+            <a href="{% url 'wad:home' %}">Home</a> 
             <a href="#news">News</a> 
             <a href="#contact">Contact</a> 
             <a href="#about">About</a>
-            <a href="/wad/cuisine/">Cuisine</a>
+            <a href="{% url 'wad:cuisine' %}">Cuisine</a>
         </div>
     
         <div class="nav-right">
-            <a href="/wad/register">Sign Up</a>
-            <a href="/wad/login/">Login</a>
+            <a href="{% url 'wad:register' %}">Sign Up</a>
+            <a href="{% url 'wad:login' %}">Login</a>
         </div>
     </div>
 

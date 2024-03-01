@@ -11,8 +11,28 @@ def home(request):
     return render(request, 'project/home.html')
 
 def cuisine(request):
-    
     return render(request, 'project/cuisine.html')
+
+def italian(request):
+    return render(request, 'project/italian.html')
+
+def chinese(request):
+    return render(request, 'project/chinese.html')
+
+def thai(request):
+    return render(request, 'project/thai.html')
+
+def indian(request):
+    return render(request, 'project/indian.html')
+
+
+
+
+
+
+
+
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -43,7 +63,6 @@ def user_logout(request):
     logout(request)
     #take user back to homepage
     return redirect(reverse('wad:home'))
-
 
 def register(request):
     

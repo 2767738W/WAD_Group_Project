@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Homepage</title>
+    <title>Chinese Recipes</title>
     <style>
         /* Reset default styles */
         body, h1, h2, h3, p {
@@ -78,7 +78,7 @@
         }
 
         .main-content img {
-            max-width: 100%; /* Ensure images don't exceed their container's width */
+            max-width: 100%;
             height: auto;
             margin-bottom: 20px;
         }
@@ -107,27 +107,13 @@
 
     <div class="content-container">
         <div class="sidebar">
-            <h1>Select a Cuisine</h1>
-            <ul>
-                <li><a href="{% url 'wad:italian' %}">Italian</a></li>
-                <li><a href="{% url 'wad:chinese' %}">Chinese</a></li>
-                <li><a href="{% url 'wad:thai' %}">Thai</a></li>
-                <li><a href="{% url 'wad:indian' %}">Indian</a></li>
-            </ul>
-
         </div>
 
         <div class="main-content">
-            <img src="/static/images/food1.jpg" alt="Photo">
-            <div class="about-text">
-                <p>Select your preferred cuisine in the left sidebar! Clicking on a cuisine
-                    allows you to either view recipes or add recipes to your chosen cuisine!
-                </p>
-                <img src="/static/images/thai.jpg" alt="Photo" style="width: 100%; height: auto; margin-top: 40px;">
-            </div>
         </div>
     </div>
 
 </body>
 </html>
+
 
