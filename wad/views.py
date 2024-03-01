@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 def home(request):
-    return render(request, 'project/base.html')
+    return render(request, 'project/home.html')
 
 def register(request):
     
