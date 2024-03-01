@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from wad.forms import UserForm, UserProfileForm
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
+from django.urls import reverse
 
 def home(request):
     return render(request, 'project/base.html')
-
-def user_login(request):
-    return render(request, 'project/login.html')
 
 def register(request):
     
@@ -35,8 +35,25 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render(request, 'wad/register.html', {
+    return render(request, 'project/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
         'registered': registered
     })
+    
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return redirect(reverse('project/base.html'))
+            else:
+                return HttpResponse("Your account is disabled.")
+        else:
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        return render(request, 'project/login.html')
