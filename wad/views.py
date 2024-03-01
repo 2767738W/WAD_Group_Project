@@ -10,6 +10,10 @@ def home(request):
     #code for getting most liked recipies in here
     return render(request, 'project/home.html')
 
+def cuisine(request):
+    
+    return render(request, 'project/cuisine.html')
+
 def user_login(request):
     if request.method == 'POST':
 
@@ -38,7 +42,7 @@ def user_logout(request):
     #user is already logged in so we can log them out
     logout(request)
     #take user back to homepage
-    return redirect(reverse('project:home'))
+    return redirect(reverse('wad:home'))
 
 
 def register(request):
