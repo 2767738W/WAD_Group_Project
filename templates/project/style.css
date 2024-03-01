@@ -1,0 +1,31 @@
+.navbar {
+    background-color: #333; 
+    overflow: hidden;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: white; 
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #111; 
+}
+
+.photo-container {
+    width: 100%; 
+    text-align: center; 
+    margin-top: 20px; 
+}
+
+.photo-container img {
+    max-width: 100%; 
+    height: auto; 
+    display: block;
+    margin: 0 auto; 
+}
+
