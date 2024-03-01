@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from wad.forms import UserForm, UserProfileForm
 
 def home(request):
-    return render(request, 'project/base.html')
+    return render(request, 'project/home.html')
 
 def user_login(request):
     return render(request, 'project/login.html')
