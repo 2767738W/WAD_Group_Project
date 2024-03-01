@@ -1,12 +1,45 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from wad.forms import UserForm, UserProfileForm
-from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 
 def home(request):
+    #code for getting most liked recipies in here
     return render(request, 'project/home.html')
+
+def user_login(request):
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+
+                login(request, user)
+                return redirect(reverse('project:home'))
+            else:
+                return HttpResponse("Your account is disabled.")
+        else:
+
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("invalid login details supplied.")
+        
+    else:
+        return render(request, 'project/login.html')
+
+@login_required
+def user_logout(request):
+    #user is already logged in so we can log them out
+    logout(request)
+    #take user back to homepage
+    return redirect(reverse('project:home'))
+
 
 def register(request):
     
