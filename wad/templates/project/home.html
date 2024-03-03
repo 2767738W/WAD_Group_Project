@@ -107,14 +107,14 @@
 
     <div class="content-container">
         <div class="sidebar">
+            <!-- displays top ten recipes -->
             <h2>Top ten current meals</h2>
             <ul>
-                <li><a href="#">Link 1</a></li>
-                <li><a href="#">Link 2</a></li>
-                <li><a href="#">Link 3</a></li>
+                {% for recipe in recipes %}
+                    <li>{{ recipe }}</li>
+                {% endfor %}
             </ul>
             <img src="/static/images/health.jpg" alt="Photo" style="max-width: 100%; height: auto ">
-
         </div>
 
         <div class="main-content">
