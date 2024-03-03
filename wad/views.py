@@ -25,7 +25,11 @@ def thai(request):
 def indian(request):
     return render(request, 'project/indian.html')
 
+def addrecipe(request):
+    return render(request, 'project/addrecipe.html')
 
+def myrecipes(request):
+    return render(request, 'project/myrecipes.html')
 
 
 

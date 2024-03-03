@@ -12,4 +12,6 @@ urlpatterns = [
     path('chinese/', views.chinese, name='chinese'),
     path('thai/', views.thai, name='thai'),
     path('indian/', views.indian, name='indian'), 
+    path('addrecipe/', views.addrecipe, name='addrecipe'),
+    path('myrecipes/', views.myrecipes, name='myrecipes'),
 ]
