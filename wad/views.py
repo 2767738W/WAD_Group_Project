@@ -5,10 +5,20 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from wad.models import Recipe
+from django.db.models import Avg
+
 
 def home(request):
-    #code for getting most liked recipies in here
-    return render(request, 'project/home.html')
+    #used to get the top ten recipes with the highest average star rating and get their names to display
+    top_ten_recipes = Recipe.objects.annotate(avg_rating=Avg('starrating__rating')).order_by('-avg_rating')[:10]
+
+    top_recipe_names = [recipe.name for recipe in top_ten_recipes]
+
+    recipe_dict = {'recipes': top_recipe_names}
+
+    return render(request, 'project/home.html', context = recipe_dict)
+   
 
 def cuisine(request):
     return render(request, 'project/cuisine.html')
@@ -25,14 +35,14 @@ def thai(request):
 def indian(request):
     return render(request, 'project/indian.html')
 
+def addrecipe(request):
+    return render(request, 'project/addrecipe.html')
 
+def viewrecipe(request):
+    return render(request, 'project/viewrecipe.html')
 
-
-
-
-
-
-
+def myrecipes(request):
+    return render(request, 'project/myrecipes.html')
 
 def user_login(request):
     if request.method == 'POST':
@@ -97,19 +107,11 @@ def register(request):
         'registered': registered
     })
     
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                return redirect(reverse('project/base.html'))
-            else:
-                return HttpResponse("Your account is disabled.")
-        else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
-    else:
-        return render(request, 'project/login.html')
+def add_recipe(request):
+    #code to deal with user adding new recipe
+
+    return 
+
+def rate_recipe(request):
+    #code to deal with user leaving rating
+    return

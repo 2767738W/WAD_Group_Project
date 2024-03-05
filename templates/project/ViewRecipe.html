@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    {% block title %}View Recipes{% endblock %}
+    <style>
+        .recipe-container {
+            display: flex;
+            align-items: center; 
+        }
+
+        .recipe-photo {
+            width: 40%; 
+            margin-right: 20px; 
+        }
+
+        .recipe-details {
+            width: 60%; 
+        }
+
+        .recipe-details h3 {
+            margin-top: 0; 
+        }
+    </style>
+</head>
+<body>
+{% block body_block %}
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="{% url 'wad:home' %}">Home</a> 
+            <a href="#news">News</a> 
+            <a href="#contact">Contact</a> 
+            <a href="#about">About</a>
+            <a href="{% url 'wad:cuisine' %}">Cuisine</a>
+        </div>
+    
+        <div class="nav-right">
+            <a href="{% url 'wad:register' %}">Sign Up</a>
+            <a href="{% url 'wad:login' %}">Login</a>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="sidebar">
+        </div>
+        <ul>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'wad:addrecipe' %}">Add Recipe</a></li>
+            {% endif %}
+        </ul>
+        <div class="main-content">
+            <h2>View Recipe</h2>
+            <div class="recipe-container">
+                <div class="recipe-photo">
+                    <!-- Add your photo here -->
+                    <img src="{% static 'path/to/your/photo.jpg' %}" alt="Recipe Photo">
+                </div>
+                <div class="rating">
+                    <span class="star" data-value="1">☆</span>
+                    <span class="star" data-value="2">☆</span>
+                    <span class="star" data-value="3">☆</span>
+                    <span class="star" data-value="4">☆</span>
+                    <span class="star" data-value="5">☆</span>
+                </div>
+                <div class="recipe-details">
+                    <h3>Recipe Name:</h3>
+                    <p>{{ recipe.name }}</p>
+                    <h3>Ingredients:</h3>
+                    <p>{{ recipe.ingredients }}</p>
+                    <h3>How to Make:</h3>
+                    <p>{{ recipe.instructions }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star');
+
+        stars.forEach(function(star) {
+            star.addEventListener('click', function() {
+                const value = parseInt(star.dataset.value);
+                console.log('User rated with ' + value + ' stars.');
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

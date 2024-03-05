@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% block title %}Navigation bar{% endblock %}
+    <style>
+        .navbar {
+            display: flex;
+            justify-content: space-between; /* Adjusts the space between items */
+            overflow: hidden;
+            background-color: #333; /* Dark background color */
+            font-family: Arial, sans-serif; /* Font style */
+        }
+
+        .navbar a {
+            display: block;
+            color: white; /* White text color */
+            text-align: center;
+            padding: 30px 20px; /* Padding inside the links */
+            text-decoration: none; /* No underline on links */
+        }
+
+        .navbar a:hover {
+            background-color: #ddd; /* Light grey background on hover */
+            color: black; /* Black text color on hover */
+        }
+
+        .nav-left,
+        .nav-right {
+            display: flex;
+        }
+
+    </style>
+</head>
+
+<body>
+    {% block body_block %}
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="{% url 'wad:home' %}">Home</a> 
+            <a href="#news">News</a> 
+            <a href="#contact">Contact</a> 
+            <a href="#about">About</a>
+            <a href="{% url 'wad:cuisine' %}">Cuisine</a>
+        </div>
+    
+        <div class="nav-right">
+            <a href="{% url 'wad:register' %}">Sign Up</a>
+            <a href="{% url 'wad:login' %}">Login</a>
+        </div>
+    </div>
+    {% endblock %} 
+</body>
+
+</html>

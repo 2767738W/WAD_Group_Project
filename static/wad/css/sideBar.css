@@ -1,0 +1,25 @@
+
+.sidebar {
+    width: 30%; /* Sidebar takes up 20% of the container width */
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    padding-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block; /* Make the links fill the container */
+    padding: 10px 0; /* Add padding to the links */
+}
+
+.sidebar ul li a:hover {
+    background-color: #ddd;
+}

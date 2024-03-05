@@ -61,7 +61,8 @@ ROOT_URLCONF = 'wad_group_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR, ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'templates', 'project'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
