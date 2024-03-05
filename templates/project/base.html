@@ -3,7 +3,6 @@
 <html>
 
 <head>
-    {% block title %}Navigation bar{% endblock %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'wad/css/navBar.css' %}">
     
@@ -13,7 +12,6 @@
 </head>
 
 <body>
-    {% block body_block %}
     <div class="navbar">
         <div class="nav-left">
             <a href="{% url 'wad:home' %}">Home</a> 
@@ -25,6 +23,8 @@
             <a href="{% url 'wad:login' %}">Login</a>
         </div>
     </div>
+    {% block body_block %}
+    
     {% endblock %} 
 </body>
 

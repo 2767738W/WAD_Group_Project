@@ -59,6 +59,8 @@ class Recipe(models.Model):
     
     
     
+    
+    
 class starRating(models.Model):
     userID = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     recipeID = models.ForeignKey(Recipe, on_delete=models.CASCADE)

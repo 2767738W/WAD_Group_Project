@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'project/base.html' %}
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
@@ -23,20 +23,15 @@
             margin-top: 0; 
         }
     </style>
+    {% block additionalhead %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wad/css/sideBar.css' %}">
+    <link rel="stylesheet" href="{% static 'wad/css/mainBodyStyle.css' %}">
+    {% endblock %}
 </head>
 <body>
 {% block body_block %}
-    <div class="navbar">
-        <div class="nav-left">
-            <a href="{% url 'wad:home' %}">Home</a> 
-            <a href="{% url 'wad:cuisine' %}">Cuisine</a>
-        </div>
     
-        <div class="nav-right">
-            <a href="{% url 'wad:register' %}">Sign Up</a>
-            <a href="{% url 'wad:login' %}">Login</a>
-        </div>
-    </div>
 
     <div class="content-container">
         <div class="sidebar">
