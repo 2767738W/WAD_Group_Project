@@ -21,7 +21,7 @@ def home(request):
    
 
 def cuisine(request):
-    return render(request, 'project/cuisine.html')
+    return render(request, 'project/Cuisine.html')
 
 def italian(request):
     return render(request, 'project/italian.html')
@@ -38,11 +38,28 @@ def indian(request):
 def addrecipe(request):
     return render(request, 'project/addrecipe.html')
 
+
+
+#Basic template view
 def viewrecipe(request):
-    return render(request, 'project/viewrecipe.html')
+    return render(request, 'project/ViewRecipe.html')
+
+#Specific recipe view
+def view_recipe(request, recipe_slug_name):
+    context_dict = {}
+    
+    try:
+        recipe = Recipe.objects.get(slug=recipe_slug_name)
+        context_dict['recipe'] = recipe
+    except Recipe.DoesNotExist:
+        context_dict['recipe'] = None
+        
+    return render(request, 'rango/ViewRecipe.html', context=context_dict)
+
+
 
 def myrecipes(request):
-    return render(request, 'project/myrecipes.html')
+    return render(request, 'project/MyRecipes.html')
 
 def user_login(request):
     if request.method == 'POST':
@@ -101,7 +118,7 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render(request, 'project/register.html', {
+    return render(request, 'project/Register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
         'registered': registered
