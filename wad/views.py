@@ -38,8 +38,25 @@ def indian(request):
 def addrecipe(request):
     return render(request, 'project/addrecipe.html')
 
+
+
+#Basic template view
 def viewrecipe(request):
     return render(request, 'project/ViewRecipe.html')
+
+#Specific recipe view
+def view_recipe(request, recipe_slug_name):
+    context_dict = {}
+    
+    try:
+        recipe = Recipe.objects.get(slug=recipe_slug_name)
+        context_dict['recipe'] = recipe
+    except Recipe.DoesNotExist:
+        context_dict['recipe'] = None
+        
+    return render(request, 'rango/ViewRecipe.html', context=context_dict)
+
+
 
 def myrecipes(request):
     return render(request, 'project/MyRecipes.html')

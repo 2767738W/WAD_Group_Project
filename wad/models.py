@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Avg
+from django.template.defaultfilters import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -40,14 +41,20 @@ class Recipe(models.Model):
     cuisine = models.CharField(max_length=7, choices=CUISINE_CHOICES)
     ingredients = models.TextField(max_length = RECIPE_MAX_LENGTH)
     instructions = models.TextField(max_length = RECIPE_MAX_LENGTH)
-    avgStarRating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
     image = models.ImageField(upload_to=user_directory_path)
+    slug = models.SlugField(unique=True)
     
-    def update_avg_star_rating(self):
-        avg_rating = self.starrating_set.aggregate(Avg('rating'))['rating__avg']
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Recipe, self).save(*args, **kwargs)
+        
+    
+    # avgStarRating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+    # def update_avg_star_rating(self):
+    #     avg_rating = self.starrating_set.aggregate(Avg('rating'))['rating__avg']
 
-        self.avgStarRating = avg_rating if avg_rating is not None else 0
-        self.save()
+    #     self.avgStarRating = avg_rating if avg_rating is not None else 0
+    #     self.save()
     
     
     

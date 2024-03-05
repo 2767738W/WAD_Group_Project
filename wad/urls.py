@@ -15,4 +15,6 @@ urlpatterns = [
     path('addrecipe/', views.addrecipe, name='addrecipe'),
     path('viewrecipe/', views.viewrecipe, name='viewrecipe'),
     path('myrecipes/', views.myrecipes, name='myrecipes'),
+    path('viewrecipe/<slug:recipe_name_slug>/',
+         views.viewrecipe, name='view_recipe'),
 ]
