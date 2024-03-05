@@ -38,6 +38,7 @@ class Recipe(models.Model):
     ]
     
     name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
     cuisine = models.CharField(max_length=7, choices=CUISINE_CHOICES)
     ingredients = models.TextField(max_length = RECIPE_MAX_LENGTH)
     instructions = models.TextField(max_length = RECIPE_MAX_LENGTH)
