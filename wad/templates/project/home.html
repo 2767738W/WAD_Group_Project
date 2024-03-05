@@ -1,6 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'project/base.html' %}
 
 {% block title %}Homepage{% endblock %}
+
+{% block additionalhead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'wad/css/sideBar.css' %}">
+<link rel="stylesheet" href="{% static 'wad/css/mainBodyStyle.css' %}">
+{% endblock %}
 
 {% block content %}
     <div class="content-container">

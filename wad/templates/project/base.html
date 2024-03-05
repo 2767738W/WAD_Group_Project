@@ -4,6 +4,8 @@
     <title>{% block title %}Navigation Bar{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'wad/css/navBar.css' %}">
+    {% block additionalhead %}{% endblock %}
+
 </head>
 <body>
     <div class="navbar">
