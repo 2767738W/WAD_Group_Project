@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Navigation Bar{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wad/css/navBar.css' %}">
+    {% block additionalhead %}{% endblock %}
+
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="{% url 'wad:home' %}">Home</a>
+            <a href="{% url 'wad:cuisine' %}">Cuisine</a>
+        </div>
+
+        <div class="nav-right">
+            <a href="{% url 'wad:register' %}">Sign Up</a>
+            <a href="{% url 'wad:login' %}">Login</a>
+        </div>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

@@ -1,9 +1,7 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
-    {% block title %}Italian recipes{% endblock %}
+    <title>Italian Recipes</title>
     <style>
         /* Reset default styles */
         body, h1, h2, h3, p {
@@ -91,13 +89,10 @@
     </style>
 </head>
 <body>
-{% block body_block %}
+
     <div class="navbar">
         <div class="nav-left">
             <a href="{% url 'wad:home' %}">Home</a> 
-            <a href="#news">News</a> 
-            <a href="#contact">Contact</a> 
-            <a href="#about">About</a>
             <a href="{% url 'wad:cuisine' %}">Cuisine</a>
         </div>
     
@@ -110,17 +105,11 @@
     <div class="content-container">
         <div class="sidebar">
         </div>
-        <ul>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'wad:addrecipe' %}">Add Recipe</a></li>
-            {% endif %}
-            <li><a href="{% url 'wad:viewrecipe' %}">View Recipes</a></li>
-        </ul>
+
         <div class="main-content">
-            <img src="/static/images/italian.jpg" alt="Photo" style="width: 100%; height: auto; margin-top: 40px;">
         </div>
     </div>
-{% endblock %}
+
 </body>
 </html>
 
