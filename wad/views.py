@@ -132,3 +132,6 @@ def add_recipe(request):
 def rate_recipe(request):
     #code to deal with user leaving rating
     return
+ 
+def my_recipes(request):
+    return

@@ -11,11 +11,16 @@
 
 </head>
 
-<body>
+<body
+    </body>
     <div class="navbar">
+        <!--add logout instead of login and sign up when user logged in-->
         <div class="nav-left">
             <a href="{% url 'wad:home' %}">Home</a> 
             <a href="{% url 'wad:cuisine' %}">Cuisine</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'wad:myrecipes' %}">myrecipes</a>
+            {% endif %}
         </div>
     
         <div class="nav-right">
