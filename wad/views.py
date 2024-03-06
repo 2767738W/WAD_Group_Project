@@ -133,11 +133,11 @@ def add_recipe(request):
             recipe = form.save(commit=False)
             recipe.user = request.user
             recipe.save()
-            return redirect("wad/viewRecipe.html", recipe_slug_name = recipe.slug)
+            return redirect("project/viewRecipe.html", recipe_slug_name = recipe.slug)
         
         else:
             form = RecipeForm()
-        return render(request, 'wad/addrecipe.html', {'form':form})
+        return render(request, 'project/addrecipe.html', {'form':form})
 
 
 def rate_recipe(request):
@@ -146,4 +146,9 @@ def rate_recipe(request):
  
 @login_required
 def my_recipes(request):
-    return
+
+    user_recipes = Recipe.objects.filter(user=request.user)
+
+    context_dict = {'user_recipes': user_recipes}
+
+    return render(request, 'project/MyRecipes.html', context_dict)
