@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from wad.forms import UserForm, UserProfileForm
+from wad.forms import RecipeForm, UserForm, UserProfileForm
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -124,14 +124,26 @@ def register(request):
         'registered': registered
     })
     
+@login_required
 def add_recipe(request):
-    #code to deal with user adding new recipe
+    if request.method == 'POST':
+        form = RecipeForm(request.POST)
 
-    return 
+        if form.is_valid():
+            recipe = form.save(commit=False)
+            recipe.user = request.user
+            recipe.save()
+            return redirect("wad/viewRecipe.html", recipe_slug_name = recipe.slug)
+        
+        else:
+            form = RecipeForm()
+        return render(request, 'wad/addrecipe.html', {'form':form})
+
 
 def rate_recipe(request):
     #code to deal with user leaving rating
     return
  
+@login_required
 def my_recipes(request):
     return
