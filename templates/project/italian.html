@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    {% block additionalhead %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wad/css/sideBar.css' %}">
+    <link rel="stylesheet" href="{% static 'wad/css/mainBodyStyle.css' %}">
+    {% endblock %} 
+</head>
+   
+{% block body_block %}
+
+    <div class="content-container">
+        <div class="sidebar">
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'wad:addrecipe' %}">Add Recipe</a></li>
+                {% endif %}
+                <li><a href="{% url 'wad:viewrecipe' %}">View Recipes</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <img src="/static/images/italian.jpg" alt="Photo" style="width: 100%; height: auto; margin-top: 40px;">
+        </div>
+    </div>
+{% endblock %}
+    
+</body>
+</html>
+
+

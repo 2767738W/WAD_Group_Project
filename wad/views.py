@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from wad.forms import RecipeForm, UserForm, UserProfileForm
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from wad.models import Recipe
+from wad.models import Recipe, starRating
 from django.db.models import Avg
+from django.views.decorators.http import require_POST
 
 
 def home(request):
@@ -140,10 +141,27 @@ def add_recipe(request):
         return render(request, 'project/addrecipe.html', {'form':form})
 
 
+@require_POST
 def rate_recipe(request):
-    #code to deal with user leaving rating
-    return
- 
+    try:
+        recipe_id = request.POST.get('recipe_id')
+        rating = int(request.POST.get('rating'))
+
+        # Validate rating value
+        if rating < 1 or rating > 5:
+            return JsonResponse({'error': 'Invalid rating value'}, status=400)
+
+        # Retrieve the recipe object
+        recipe = get_object_or_404(Recipe, pk=recipe_id)
+
+        # Save the rating to the database and associate it with the recipe
+        starRating.objects.create(recipeID=recipe, rating=rating)
+
+        return JsonResponse({'message': 'Rating submitted successfully'})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
 @login_required
 def my_recipes(request):
 

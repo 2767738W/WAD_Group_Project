@@ -17,4 +17,5 @@ urlpatterns = [
     path('myrecipes/', views.myrecipes, name='myrecipes'),
     path('viewrecipe/<slug:recipe_name_slug>/',
          views.viewrecipe, name='view_recipe'),
+    path('raterecipe/', views.rate_recipe, name='raterecipe'),
 ]

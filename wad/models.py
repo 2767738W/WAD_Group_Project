@@ -44,18 +44,17 @@ class Recipe(models.Model):
     instructions = models.TextField(max_length = RECIPE_MAX_LENGTH)
     image = models.ImageField(upload_to=user_directory_path)
     slug = models.SlugField(unique=True)
-    
+
+    def avg_star_rating(self):
+        return self.starrating_set.aggregate(Avg('rating'))['rating__avg'] or 0
+
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Recipe, self).save(*args, **kwargs)
+        # Update the average star rating whenever the recipe is saved
+        self.avgStarRating = self.avg_star_rating
+        super().save(*args, **kwargs)
         
     
-    # avgStarRating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
-    # def update_avg_star_rating(self):
-    #     avg_rating = self.starrating_set.aggregate(Avg('rating'))['rating__avg']
-
-    #     self.avgStarRating = avg_rating if avg_rating is not None else 0
-    #     self.save()
+    
     
     
     

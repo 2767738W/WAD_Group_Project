@@ -22,6 +22,33 @@
         .recipe-details h3 {
             margin-top: 0; 
         }
+
+        /* Hide radio buttons */
+        .star-rating input {
+            display: none;
+        }
+
+        /* Style the label for the radio buttons to look like stars */
+        .star-rating label {
+            font-size: 24px; /* Adjust size as needed */
+            cursor: pointer;
+            color: #ccc; /* Default star color */
+        }
+
+        .star-rating input:checked + label::before {
+            content: '★'; /* Filled star */
+            color: gold; /* Yellow color */
+        }
+
+        .star-rating label::before {
+            content: '☆'; /* Empty star */
+            color: #ccc; /* Default star color */
+        }
+
+        /* Highlight stars based on button click */
+        .star-rating label.active::before {
+            color: gold; /* Yellow color */
+        }
     </style>
     {% block additionalhead %}
     {% load static %}
@@ -48,13 +75,19 @@
                     <!-- Add your photo here -->
                     <img src="{% static 'path/to/your/photo.jpg' %}" alt="Recipe Photo">
                 </div>
-                <div class="rating">
-                    <span class="star" data-value="1">☆</span>
-                    <span class="star" data-value="2">☆</span>
-                    <span class="star" data-value="3">☆</span>
-                    <span class="star" data-value="4">☆</span>
-                    <span class="star" data-value="5">☆</span>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5">
+                    <label for="star5">☆</label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4">☆</label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3">☆</label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2">☆</label>
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1">☆</label>
                 </div>
+                <button id="submitRating">Submit Rating</button>
                 <div class="recipe-details">
                     <h3>Recipe Name:</h3>
                     <p>{{ recipe.name }}</p>
@@ -68,16 +101,51 @@
     </div>
 {% endblock %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const stars = document.querySelectorAll('.star');
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star-rating input[type="radio"]');
+    const submitBtn = document.getElementById('submitRating');
 
-        stars.forEach(function(star) {
-            star.addEventListener('click', function() {
-                const value = parseInt(star.dataset.value);
-                console.log('User rated with ' + value + ' stars.');
-            });
+    stars.forEach(function(star) {
+        // Event listener for clicking on radio buttons
+        star.addEventListener('click', function() {
+            const selectedRating = parseInt(star.value);
+            highlightStars(selectedRating); // Highlight stars up to the clicked one
         });
     });
+
+    submitBtn.addEventListener('click', function() {
+        const selectedRating = document.querySelector('.star-rating input:checked').value;
+        console.log('Submit button clicked with rating: ' + selectedRating);
+        // Example: Send rating to server using AJAX
+        rateRecipe(selectedRating);
+    });
+
+    // Function to highlight stars up to a certain rating
+    function highlightStars(rating) {
+        stars.forEach(function(star, index) {
+            const label = star.nextElementSibling; // Get the corresponding label
+            if (index < rating) {
+                label.classList.add('active');
+            } else {
+                label.classList.remove('active');
+            }
+        });
+    }
+
+    // Function to send rating to server using AJAX
+    function rateRecipe(rating) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', "{% url 'wad:raterecipe' %}", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+                // Handle response as needed
+            }
+        };
+        xhr.send('rating=' + rating);
+    }
+});
 </script>
 
 </body>
