@@ -10,11 +10,12 @@
 <body>
 {% block body_block %}
     <h1>Register</h1>
-    <form id="register_form" method="post" action="/path/to/register">
+    <form id="register_form" method="post" action="{% url 'wad:register' %}" enctype="multipart/form-data">
+        {% csrf_token %}
         Username: <input type="text" name="Username" value="" size="50" /><br />
         Forename: <input type="text" name="Forename" value="" size="50" /><br />
         Surname: <input type="text" name="Surname" value="" size="50" /><br />
-        Date of Birth: <input type="email" name="DateOfBirth" value=""  size="50" /><br />
+        Date of Birth: <input type="text" name="DateOfBirth" value=""  size="50" /><br />
         Email: <input type="email" name="Email" value="" size="50" /><br />
         Password: <input type="password" name="Password" value="" size="50" /><br />
         Confirm Password: <input type="password" name="ConfirmPassword" value="" size="50" /><br />
