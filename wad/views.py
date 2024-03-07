@@ -162,6 +162,7 @@ def rate_recipe(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 
+#used to display users submitted recipes on myrecipes.html
 @login_required
 def my_recipes(request):
 

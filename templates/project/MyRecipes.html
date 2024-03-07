@@ -1,0 +1,27 @@
+{% extends 'project/base.html' %}
+{% load staticfiles %}
+<html>
+<head>
+    {% block title %}My Recipes{% endblock %}
+    {% block additionalhead %}
+    <link rel="stylesheet" href="{% static 'wad/css/mainBodyStyle.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+    {% block body_block %}
+    <div class="main-content">
+        <h1>My Recipes</h1>
+        {% for recipe in user_recipes %}
+        <div class = "...">
+            <h2>{{ recipe.name }}</h2>
+            <p><strong>Cuisine:</strong> {{ recipe.cuisine }}</p>
+            <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+            <p><strong>Instructions</strong> {{ recipe.instructions }}</p>
+            <img src="{{ recipe.image.url }}" alt="Recipe Image">
+        </div>
+        {% endfor %}
+    </div>
+    {% endblock %}
+</body>
+</html>
