@@ -27,7 +27,7 @@ class UserProfile(models.Model):
    
    
 class Recipe(models.Model):
-    RECIPE_MAX_LENGTH = 1024
+    RECIPE_MAX_LENGTH = 8192
     NAME_MAX_LENGTH = 128
     
     CUISINE_CHOICES = [
