@@ -14,9 +14,9 @@ urlpatterns = [
     path('thai/', views.thai, name='thai'),
     path('indian/', views.indian, name='indian'), 
     path('addrecipe/', views.addrecipe, name='addrecipe'),
-    path('viewrecipe/', views.viewrecipe, name='viewrecipe'),
+    #path('viewrecipe/', views.viewrecipe, name='viewrecipe'),
     path('myrecipes/', views.myrecipes, name='myrecipes'),
     path('viewrecipe/<slug:recipe_name_slug>/',
-         views.viewrecipe, name='view_recipe'),
+         views.view_recipe, name='view_recipe'),
     path('raterecipe/', views.rate_recipe, name='raterecipe'),
 ]

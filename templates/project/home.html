@@ -19,7 +19,7 @@
                     <h2>Top ten current meals</h2>
                     <ul class="list-group">
                         {% for recipe in recipes %}
-                            <li class="list-group-item">{{ recipe }}</li>
+                            <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>

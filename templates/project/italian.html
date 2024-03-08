@@ -18,7 +18,14 @@
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'wad:addrecipe' %}">Add Recipe</a></li>
                 {% endif %}
-                <li><a href="{% url 'wad:viewrecipe' %}">View Recipes</a></li>
+                
+                {% if recipes %}
+                    {% for recipe in recipes %}
+                        <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
+                    {% endfor %}
+                {% else %}
+                    Sorry we don't have any Italian recipes yet. Please register and add some
+                {% endif %}
             </ul>
         </div>
         <div class="main-content">

@@ -25,16 +25,48 @@ def cuisine(request):
     return render(request, 'project/Cuisine.html')
 
 def italian(request):
-    return render(request, 'project/italian.html')
+    context_dict = {}
+    
+    try:
+        italian_recipes = Recipe.objects.filter(cuisine='italian')
+        context_dict['recipes'] = italian_recipes
+    except Recipe.DoesNotExist:
+        context_dict['recipes'] = None
+        
+    return render(request, 'project/italian.html', context=context_dict)
 
 def chinese(request):
-    return render(request, 'project/chinese.html')
+    context_dict = {}
+    
+    try:
+        chinese_recipes = Recipe.objects.filter(cuisine='chinese')
+        context_dict['recipes'] = chinese_recipes
+    except Recipe.DoesNotExist:
+        context_dict['recipes'] = None
+    
+    return render(request, 'project/chinese.html', context=context_dict)
 
 def thai(request):
-    return render(request, 'project/thai.html')
+    context_dict = {}
+    
+    try:
+        thai_recipes = Recipe.objects.filter(cuisine='thai')
+        context_dict['recipes'] = thai_recipes
+    except Recipe.DoesNotExist:
+        context_dict['recipes'] = None
+    
+    return render(request, 'project/thai.html', context=context_dict)
 
 def indian(request):
-    return render(request, 'project/indian.html')
+    context_dict = {}
+    
+    try:
+        indian_recipes = Recipe.objects.filter(cuisine='indian')
+        context_dict['recipes'] = indian_recipes
+    except Recipe.DoesNotExist:
+        context_dict['recipes'] = None
+    
+    return render(request, 'project/indian.html', context=context_dict)
 
 def addrecipe(request):
     return render(request, 'project/addrecipe.html')
@@ -46,16 +78,16 @@ def viewrecipe(request):
     return render(request, 'project/ViewRecipe.html')
 
 #Specific recipe view
-def view_recipe(request, recipe_slug_name):
+def view_recipe(request, recipe_name_slug):
     context_dict = {}
     
     try:
-        recipe = Recipe.objects.get(slug=recipe_slug_name)
+        recipe = Recipe.objects.get(slug=recipe_name_slug)
         context_dict['recipe'] = recipe
     except Recipe.DoesNotExist:
         context_dict['recipe'] = None
         
-    return render(request, 'rango/ViewRecipe.html', context=context_dict)
+    return render(request, 'project/ViewRecipe.html', context=context_dict)
 
 
 

@@ -20,7 +20,14 @@
             {% if user.is_authenticated %}
                     <li><a href="{% url 'wad:addrecipe' %}">Add Recipe</a></li>
             {% endif %}
-            <li><a href="{% url 'wad:viewrecipe' %}">View Recipes</a></li>
+
+            {% if recipes %}
+                    {% for recipe in recipes %}
+                        <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
+                    {% endfor %}
+                {% else %}
+                    Sorry we don't have any Indian recipes yet. Please register and add some
+                {% endif %}
         </ul>
         <div class="main-content">
             <img src="/static/images/indian.jpg" alt="Photo" style="width: 100%; height: auto; margin-top: 40px;">

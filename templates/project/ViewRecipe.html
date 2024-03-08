@@ -3,7 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {% block title %}View Recipes{% endblock %}
+    {% block title %}
+        {% if recipe %}
+            {{ recipe.name }}
+        {% else %}
+            Unknown Recipe
+        {% endif %}
+    {% endblock %}
     <style>
         .recipe-container {
             display: flex;
@@ -58,47 +64,50 @@
 </head>
 <body>
 {% block body_block %}
-    
+    {% if recipe %}
 
-    <div class="content-container">
-        <div class="sidebar">
-        </div>
-        <ul>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'wad:addrecipe' %}">Add Recipe</a></li>
-            {% endif %}
-        </ul>
-        <div class="main-content">
-            <h2>View Recipe</h2>
-            <div class="recipe-container">
-                <div class="recipe-photo">
-                    <!-- Add your photo here -->
-                    <img src="{% static 'path/to/your/photo.jpg' %}" alt="Recipe Photo">
-                </div>
-                <div class="star-rating">
-                    <input type="radio" id="star5" name="rating" value="5">
-                    <label for="star5">☆</label>
-                    <input type="radio" id="star4" name="rating" value="4">
-                    <label for="star4">☆</label>
-                    <input type="radio" id="star3" name="rating" value="3">
-                    <label for="star3">☆</label>
-                    <input type="radio" id="star2" name="rating" value="2">
-                    <label for="star2">☆</label>
-                    <input type="radio" id="star1" name="rating" value="1">
-                    <label for="star1">☆</label>
-                </div>
-                <button id="submitRating">Submit Rating</button>
-                <div class="recipe-details">
-                    <h3>Recipe Name:</h3>
-                    <p>{{ recipe.name }}</p>
-                    <h3>Ingredients:</h3>
-                    <p>{{ recipe.ingredients }}</p>
-                    <h3>How to Make:</h3>
-                    <p>{{ recipe.instructions }}</p>
+        <div class="content-container">
+            <div class="sidebar">
+            </div>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'wad:addrecipe' %}">Add Recipe</a></li>
+                {% endif %}
+            </ul>
+            <div class="main-content">
+                <h2>View Recipe</h2>
+                <div class="recipe-container">
+                    <div class="recipe-photo">
+                        <!-- Add your photo here -->
+                        <img src="{% static 'path/to/your/photo.jpg' %}" alt="Recipe Photo">
+                    </div>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5">☆</label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4">☆</label>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3">☆</label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2">☆</label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1">☆</label>
+                    </div>
+                    <button id="submitRating">Submit Rating</button>
+                    <div class="recipe-details">
+                        <h3>Recipe Name:</h3>
+                        <p>{{ recipe.name }}</p>
+                        <h3>Ingredients:</h3>
+                        <p>{{ recipe.ingredients }}</p>
+                        <h3>How to Make:</h3>
+                        <p>{{ recipe.instructions }}</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        Error - This Recipe Does Not Exist
+    {% endif %}
 {% endblock %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
