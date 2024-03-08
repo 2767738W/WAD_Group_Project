@@ -15,3 +15,27 @@
 .about-text {
     padding: 20px;
 }
+
+.recipe-content {
+    background-color: #f9f9f9; 
+    border-radius: 8px; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); 
+}
+
+.recipe-content h2 {
+    color: #333; 
+    margin-top: 0; 
+}
+
+.recipe-content p {
+    margin: 10px 0; 
+}
+
+.recipe-content img {
+    display: block; 
+    max-width: 100%; 
+    height: auto; 
+    margin-bottom: 10px; 
+}
