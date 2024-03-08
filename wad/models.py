@@ -53,13 +53,6 @@ class Recipe(models.Model):
         self.avgStarRating = self.avg_star_rating
         super().save(*args, **kwargs)
         
-    
-    
-    
-    
-    
-    
-    
 class starRating(models.Model):
     userID = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     recipeID = models.ForeignKey(Recipe, on_delete=models.CASCADE)
