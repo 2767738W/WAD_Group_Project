@@ -11,20 +11,20 @@
 
 </head>
 
-<body
+<body>
     </body>
     <div class="navbar">
         <div class="nav-left">
             <a href="{% url 'wad:home' %}">Home</a> 
             <a href="{% url 'wad:cuisine' %}">Cuisine</a>
             {% if user.is_authenticated %}
-                <a href="{% url 'wad:myrecipes' %}">myrecipes</a>
+                <a href="{% url 'wad:myrecipes' %}">My Recipes</a>
             {% endif %}
         </div>
     
         <div class="nav-right">
             {% if user.is_authenticated %}
-                <a href="{% url 'wad:logout' %}">logout</a>
+                <a href="{% url 'wad:logout' %}">Logout</a>
             {% else %}
                 <a href="{% url 'wad:register' %}">Sign Up</a>
                 <a href="{% url 'wad:login' %}">Login</a>

@@ -10,7 +10,7 @@
 <body>
 {% block body_block %}
     <h1>Login</h1>
-    <form id="login_form" method="post" action="/path/to/login">
+    <form id="login_form" method="post" action="{% url 'wad:login' %}">
         {% csrf_token %}
         Username: <input type="text" name="Username" value="" size="50" /><br />
         Password: <input type="password" name="Password" value="" size="50" /><br />
