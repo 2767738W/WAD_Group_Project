@@ -1,16 +1,32 @@
-
 .main-content {
-    flex: 1; /* Take up remaining space */
+    text-align: center; /* Center the text */
+    margin: 0 auto; /* Center the div horizontally */
+    max-width: 600px; /* Adjust this value as needed */
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .main-content img {
-    max-width: 100%; /* Ensure images don't exceed their container's width */
+    display: block;
+    margin: 0 auto; /* Center the image horizontally */
+    max-width: 100%;
     height: auto;
     margin-bottom: 20px;
 }
+
+.image-right {
+    float: right; /* Float the image to the right */
+    margin-left: 20px; /* Add some left margin to separate from the content */
+    max-width: calc(50% - 20px); /* Adjust based on your design */
+}
+
+.image-right img {
+    max-width: 100%; /* Adjust this value as needed */
+    height: auto;
+    display: block;
+}
+
 
 .about-text {
     padding: 20px;
