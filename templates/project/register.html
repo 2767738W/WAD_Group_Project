@@ -12,16 +12,16 @@
     <h1>Register</h1>
     <form id="register_form" method="post" action="{% url 'wad:register' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        Username: <input type="text" name="Username" value="" size="50" /><br />
+        Username: <input type="text" name="username" value="" size="50" /><br />
         Forename: <input type="text" name="Forename" value="" size="50" /><br />
         Surname: <input type="text" name="Surname" value="" size="50" /><br />
         Date of Birth: <input type="text" name="DateOfBirth" value=""  size="50" /><br />
         Email: <input type="email" name="Email" value="" size="50" /><br />
-        Password: <input type="password" name="Password" value="" size="50" /><br />
-        Confirm Password: <input type="password" name="ConfirmPassword" value="" size="50" /><br />
+        Password: <input type="password" name="password" value="" size="50" /><br />
+        Confirm Password: <input type="password" name="confirm_password" value="" size="50" /><br />
         <input type="submit" value="Submit" />
     </form>
-    <p>if you decide to make an account you will be able to upload your own recipes and have people rate them.
+    <p>If you decide to make an account you will be able to upload your own recipes and have people rate them.
         This gives you an idea of what other people think of your meals.</p>
 {% endblock %}
 </body>

@@ -14,11 +14,11 @@ def home(request):
     #used to get the top ten recipes with the highest average star rating and get their names to display
     top_ten_recipes = Recipe.objects.annotate(avg_rating=Avg('starrating__rating')).order_by('-avg_rating')[:10]
 
-    top_recipe_names = [recipe.name for recipe in top_ten_recipes]
+    #top_recipe_names = [recipe.name for recipe in top_ten_recipes]
 
-    recipe_dict = {'recipes': top_recipe_names}
+    #recipe_dict = {'recipes': top_recipe_names}
 
-    return render(request, 'project/home.html', context = recipe_dict)
+    return render(request, 'project/home.html', {'recipes': top_ten_recipes})
    
 
 def cuisine(request):
@@ -138,7 +138,9 @@ def add_recipe(request):
         
         else:
             form = RecipeForm()
-        return render(request, 'project/addrecipe.html', {'form':form})
+        # Fetch top ten recipes
+        top_ten_recipes = Recipe.objects.annotate(avg_rating=Avg('starrating__rating')).order_by('-avg_rating')[:10]
+        return render(request, 'project/addrecipe.html', {'form': form, 'recipes': top_ten_recipes})
 
 
 @require_POST
