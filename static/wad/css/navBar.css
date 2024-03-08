@@ -4,7 +4,6 @@
     overflow: visible;
     background-color: #333;
     font-family: Arial, sans-serif;
-    
 }
 
 .navbar a {
@@ -24,4 +23,7 @@
     display: flex;
 }
 
-
+.nav-right {
+    display: flex;
+    align-items: center; /* Align items vertically */
+}

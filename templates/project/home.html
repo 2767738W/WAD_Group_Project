@@ -7,61 +7,31 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'wad/css/sideBar.css' %}">
     <link rel="stylesheet" href="{% static 'wad/css/mainBodyStyle.css' %}">
-    <style>
-        .rightside {
-            width: 20%;
-            background-color: #fffff;
-            background-position: top right;
-            background-repeat: no-repeat;
-            padding: 10px;
-            float: right;
-        }
-        .bottom-photo {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
-            
-        }
-        .main-content {
-            text-align: center; /* Center the text */
-            margin: 10px auto; /* Center the div if it doesn't span full width */
-            max-width: 30%; /* Adjust this to control the text block width */
-        }
-    </style>
-    
-            
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     {% endblock %}
 </head>
 <body>
 {% block body_block %}
-
-    <div class="rightside">
-        <img src="/static/images/health.jpg" alt="Photo" style="max-width: 100%; height: 80% ">
-    </div>
-    
-    <div class="sidebar">
-        <!-- displays top ten recipes -->
-        <h2>Top ten current meals</h2>
-        <ul>
-            {% for recipe in recipes %}
-                <li>{{ recipe }}</li>
-            {% endfor %}
-        </ul>
-            
-    </div>
-        
-    <div class="main-content">
-        <p>This website is made for new upcoming food enthusiats that want to share there recipes and have others rate them to give them an understanding of what people think 
-            this will be displayed in a star rating format. if alot of people like what you are making the recipe will be dispalayed on the top recipes as shown here.if you
-            want to be on this list make an account and post your recipe to the cusine and wait for the reviews to come in.
-        </p>
-    </div>
-    <div class ="bottem photo">
-        <img src="/static/images/food5.jpg" alt="Photo" class="bottom-photo">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <h2>Top ten current meals</h2>
+                    <ul class="list-group">
+                        {% for recipe in recipes %}
+                            <li class="list-group-item">{{ recipe }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="main-content">
+                    <p>This website is made for new upcoming food enthusiasts who want to share their recipes and have others rate them to give them an understanding of what people think. This will be displayed in a star rating format. If a lot of people like what you are making, the recipe will be displayed on the top recipes as shown here. If you want to be on this list, make an account and post your recipe to the cuisine and wait for the reviews to come in.</p>
+                    <img src="{% static 'images/food5.jpg' %}" alt="Photo" class="img-fluid">
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 </body>
 </html>
-
-
