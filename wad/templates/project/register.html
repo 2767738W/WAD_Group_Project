@@ -10,19 +10,28 @@
 <body>
 {% block body_block %}
     <h1>Register</h1>
+    {% if registered %}
+    Completed: <strong>Thanks for registering!</strong>
+    <a href="{% url 'wad:login' %}"> Go to login page.</a><br />
+    {% else %}
     <form id="register_form" method="post" action="{% url 'wad:register' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        Username: <input type="text" name="username" value="" size="50" /><br />
+        {{ user_form.as_p }}
+        <!-- Username: <input type="text" name="Username" value="" size="50" /><br />
         Forename: <input type="text" name="Forename" value="" size="50" /><br />
         Surname: <input type="text" name="Surname" value="" size="50" /><br />
         Date of Birth: <input type="text" name="DateOfBirth" value=""  size="50" /><br />
-        Email: <input type="email" name="Email" value="" size="50" /><br />
-        Password: <input type="password" name="password" value="" size="50" /><br />
-        Confirm Password: <input type="password" name="confirm_password" value="" size="50" /><br />
+        <label for="email">Email:</label>
+        <div>
+            <input type="email" name="Email" id="email" value="" size="50" />
+        </div>
+        Password: <input type="password" name="Password" value="" size="50" /><br />
+        Confirm Password: <input type="password" name="ConfirmPassword" value="" size="50" /><br />--> 
         <input type="submit" value="Submit" />
     </form>
     <p>If you decide to make an account you will be able to upload your own recipes and have people rate them.
         This gives you an idea of what other people think of your meals.</p>
+    {% endif %}
 {% endblock %}
 </body>
 

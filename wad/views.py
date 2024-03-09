@@ -97,8 +97,8 @@ def myrecipes(request):
 def user_login(request):
     if request.method == 'POST':
 
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('Username')
+        password = request.POST.get('Password')
 
         user = authenticate(username=username, password=password)
 
@@ -106,13 +106,13 @@ def user_login(request):
             if user.is_active:
 
                 login(request, user)
-                return redirect(reverse('project:home'))
+                return redirect(reverse('wad:home'))
             else:
                 return HttpResponse("Your account is disabled.")
         else:
 
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("invalid login details supplied.")
+            return HttpResponse("Invalid login details supplied.")
         
     else:
         return render(request, 'project/login.html')
@@ -151,7 +151,7 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render(request, 'project/Register.html', {
+    return render(request, 'project/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
         'registered': registered

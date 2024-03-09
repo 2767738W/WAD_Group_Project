@@ -28,11 +28,7 @@
             <h2>Top Ten Current Meals</h2>
             <ul class="recipe-list">
                 {% for recipe in recipes %}
-                    <li>
-                        <strong>{{ recipe.name }}</strong><br>
-                        Ingredients: {{ recipe.ingredients }}<br>
-                        How to Make: {{ recipe.instructions }}
-                    </li>
+                    <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
