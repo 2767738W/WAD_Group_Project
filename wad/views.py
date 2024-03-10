@@ -69,7 +69,7 @@ def indian(request):
     return render(request, 'project/indian.html', context=context_dict)
 
 def addrecipe(request):
-    return render(request, 'project/addrecipe.html')
+    return render(request, 'project/AddRecipe.html')
 
 
 
@@ -78,16 +78,27 @@ def viewrecipe(request):
     return render(request, 'project/ViewRecipe.html')
 
 #Specific recipe view
-def view_recipe(request, recipe_name_slug):
+def view_recipe(request, cuisine_name, recipe_name_slug):
     context_dict = {}
-    
+    cuisine_choices = [choice[0] for choice in Recipe.CUISINE_CHOICES]
     try:
-        recipe = Recipe.objects.get(slug=recipe_name_slug)
-        context_dict['recipe'] = recipe
+        if cuisine_name in cuisine_choices:
+            cuisine_recipes = Recipe.objects.filter(cuisine=cuisine_name)
+            recipe = get_object_or_404(cuisine_recipes, slug=recipe_name_slug)
+            context_dict['recipe'] = recipe
+            context_dict['cuisine_name'] = cuisine_name
+        else:
+            context_dict['cuisine_name'] = None
     except Recipe.DoesNotExist:
         context_dict['recipe'] = None
-        
+    
     return render(request, 'project/ViewRecipe.html', context=context_dict)
+    #try:
+        #recipe = Recipe.objects.get(slug=recipe_name_slug)
+        #context_dict['recipe'] = recipe
+    #except Recipe.DoesNotExist:
+        #context_dict['recipe'] = None
+        
 
 
 
@@ -166,20 +177,20 @@ def add_recipe(request):
             recipe = form.save(commit=False)
             recipe.user = request.user
             recipe.save()
-            return redirect("project/viewRecipe.html", recipe_slug_name = recipe.slug)
+            return redirect("project/ViewRecipe.html", recipe_slug_name = recipe.slug)
         
         else:
             form = RecipeForm()
         # Fetch top ten recipes
         top_ten_recipes = Recipe.objects.annotate(avg_rating=Avg('starrating__rating')).order_by('-avg_rating')[:10]
-        return render(request, 'project/addrecipe.html', {'form': form, 'recipes': top_ten_recipes})
+        return render(request, 'project/AddRecipe.html', {'form': form, 'recipes': top_ten_recipes})
 
 
 @require_POST
 def rate_recipe(request):
     try:
-        recipe_id = request.POST.get('recipe_id')
-        rating = int(request.POST.get('rating'))
+        recipe_id = request.POST['recipe_id'],
+        rating = int(request.POST['rating']),
 
         # Validate rating value
         if rating < 1 or rating > 5:

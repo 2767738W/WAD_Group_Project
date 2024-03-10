@@ -20,6 +20,7 @@
     
 </head>
 <body>
+{% block body_block %}
     <div class="content-container">
         <ul>
             <li><a href="{% url 'wad:viewrecipe' %}">View Recipes</a></li>
@@ -28,7 +29,7 @@
             <h2>Top Ten Current Meals</h2>
             <ul class="recipe-list">
                 {% for recipe in recipes %}
-                    <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
+                <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
                 {% endfor %}
             </ul>
         </div>

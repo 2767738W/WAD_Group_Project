@@ -50,7 +50,9 @@ class Recipe(models.Model):
 
     def save(self, *args, **kwargs):
         # Update the average star rating whenever the recipe is saved
-        self.avgStarRating = self.avg_star_rating
+        if not self.slug:
+            self.slug = slugify(self.name)
+        self.avgStarRating = self.avg_star_rating()  # Update the average star rating
         super().save(*args, **kwargs)
         
 class starRating(models.Model):

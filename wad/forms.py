@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from wad.models import UserProfile
-from wad.models import Recipe
+from wad.models import UserProfile,Recipe,starRating
 from django.core.exceptions import ValidationError
 
 
@@ -48,3 +47,6 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('website', 'picture',)
+
+class starRating(forms.ModelForm):
+    rating = forms.CharField
