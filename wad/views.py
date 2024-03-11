@@ -23,26 +23,53 @@ class CuisineView(View):
 
 class ItalianView(View):
     def get(self, request):
-        italian_recipes = Recipe.objects.filter(cuisine='italian')
-        return render(request, 'project/italian.html', {'recipes': italian_recipes})
+        context_dict = {}
+        try:
+            italian_recipes = Recipe.objects.filter(cuisine='italian')
+            context_dict['recipes'] = italian_recipes
+        except Recipe.DoesNotExist:
+            context_dict['recipes'] = None
+
+        return render(request, 'project/italian.html', context=context_dict)
 
 
 class ChineseView(View):
     def get(self, request):
-        chinese_recipes = Recipe.objects.filter(cuisine='chinese')
-        return render(request, 'project/chinese.html', {'recipes': chinese_recipes})
+        context_dict = {}
+        
+        try:
+            chinese_recipes = Recipe.objects.filter(cuisine='chinese')
+            context_dict['recipes'] = chinese_recipes
+        except Recipe.DoesNotExist:
+            context_dict['recipes'] = None
+
+        return render(request, 'project/chinese.html', context=context_dict)
 
 
 class ThaiView(View):
     def get(self, request):
-        thai_recipes = Recipe.objects.filter(cuisine='thai')
-        return render(request, 'project/thai.html', {'recipes': thai_recipes})
+        context_dict = {}
+        try:
+            thai_recipes = Recipe.objects.filter(cuisine='thai')
+            context_dict['recipes'] = thai_recipes
+        except Recipe.DoesNotExist:
+            context_dict['recipes'] = None
+
+        return render(request, 'project/thai.html', context=context_dict)
+        
 
 
 class IndianView(View):
     def get(self, request):
-        indian_recipes = Recipe.objects.filter(cuisine='indian')
-        return render(request, 'project/indian.html', {'recipes': indian_recipes})
+        context_dict = {}
+        try:
+            indian_recipes = Recipe.objects.filter(cuisine='indian')
+            context_dict['recipes'] = indian_recipes
+        except Recipe.DoesNotExist:
+            context_dict['recipes'] = None
+
+        return render(request, 'project/indian.html', context=context_dict)
+        
 
 
 class AddRecipeView(View):
@@ -66,18 +93,21 @@ class AddRecipeView(View):
 class ViewRecipeView(View):
     def get(self, request, cuisine_name, recipe_name_slug):
         context_dict = {}
+        
         cuisine_choices = [choice[0] for choice in Recipe.CUISINE_CHOICES]
+
         try:
             if cuisine_name in cuisine_choices:
-                cuisine_recipes = Recipe.objects.filter(cuisine=cuisine_name)
-                recipe = get_object_or_404(cuisine_recipes, slug=recipe_name_slug)
+                recipe = Recipe.objects.get(slug=recipe_name_slug, cuisine=cuisine_name)
                 context_dict['recipe'] = recipe
                 context_dict['cuisine_name'] = cuisine_name
             else:
                 context_dict['cuisine_name'] = None
         except Recipe.DoesNotExist:
             context_dict['recipe'] = None
+
         return render(request, 'project/ViewRecipe.html', context=context_dict)
+        
 
 
 class UserLoginView(View):

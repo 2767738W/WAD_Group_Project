@@ -22,12 +22,12 @@
             {% endif %}
 
             {% if recipes %}
-                    {% for recipe in recipes %}
-                        <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a></li>
-                    {% endfor %}
-                {% else %}
-                    Sorry we don't have any Indian recipes yet. Please register and add some
-                {% endif %}
+                {% for recipe in recipes %}
+                    <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a></li>
+                {% endfor %}
+            {% else %}
+                Sorry we don't have any Indian recipes yet. Please register and add some
+            {% endif %}
         </ul>
         <div class="main-content">
             <img src="/static/images/indian.jpg" alt="Photo" style="width: 100%; height: auto; margin-top: 40px;">
