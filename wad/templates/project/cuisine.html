@@ -1,5 +1,6 @@
 {% extends 'project/base.html' %}
-{% load staticfiles %}
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,34 +8,41 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'wad/css/sideBar.css' %}">
     <link rel="stylesheet" href="{% static 'wad/css/mainBodyStyle.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     {% endblock %}
 </head>
 
 <body>
 {% block body_block %}
-    <div class="content-container">
-        <div class="sidebar">
-            <h1>Select a Cuisine</h1>
-            <ul>
-                <li><a href="{% url 'wad:italian' %}">Italian</a></li>
-                <li><a href="{% url 'wad:chinese' %}">Chinese</a></li>
-                <li><a href="{% url 'wad:thai' %}">Thai</a></li>
-                <li><a href="{% url 'wad:indian' %}">Indian</a></li>
-            </ul>
-
-        </div>
-
-        <div class="main-content">
-            <img src="/static/images/food1.jpg" alt="Photo">
-            <div class="about-text">
-                <p>Select your preferred cuisine in the left sidebar! Clicking on a cuisine
-                    allows you to either view recipes or add recipes to your chosen cuisine!
-                </p>
-                <img src="/static/images/thai.jpg" alt="Photo" style="width: 100%; height: auto; margin-top: 40px;">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar for Cuisine List -->
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <h1>Select a Cuisine</h1>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="{% url 'wad:italian' %}">Italian</a></li>
+                        <li class="list-group-item"><a href="{% url 'wad:chinese' %}">Chinese</a></li>
+                        <li class="list-group-item"><a href="{% url 'wad:thai' %}">Thai</a></li>
+                        <li class="list-group-item"><a href="{% url 'wad:indian' %}">Indian</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Main Content with Image -->
+            <div class="col-md-9">
+                <div class="main-content text-center">
+                    <img src="{% static 'images/food1.jpg' %}" alt="Food" style="max-width: 75%; height: auto;">
+                    <div class="about-text">
+                        <p>Select your preferred cuisine in the left sidebar! Clicking one of the selected cuisines will direct you to recipes that come under that cuisine.
+                            Know a recipe that you cant see there make an account with us and add the recipe to the page, This allows others to try there recipe you never know 
+                            people might like it.
+                        </p>
+                    </div>
+                    <img src="{% static 'images/thai.jpg' %}" alt="Food" style="max-width: 75%; height: auto;">
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
 </body>
 </html>
-
