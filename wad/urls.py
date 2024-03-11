@@ -1,22 +1,25 @@
 from django.urls import path
-from wad import views
+from wad.views import (
+    home, RegisterView, UserLoginView, UserLogoutView, CuisineView,
+    ItalianView, ChineseView, ThaiView, IndianView, AddRecipeView,
+    ViewRecipeView, MyRecipesView, rate_recipe
+)
 
 app_name = 'wad'
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('register/', views.register, name='register'),
-    path('login/', views.user_login, name='login'),
-    path('logout/', views.user_logout, name='logout'),
-    path('cuisine/', views.cuisine, name='cuisine'),
-    path('italian/', views.italian, name='italian'),
-    path('chinese/', views.chinese, name='chinese'),
-    path('thai/', views.thai, name='thai'),
-    path('indian/', views.indian, name='indian'), 
-    path('addrecipe/', views.addrecipe, name='addrecipe'),
-    #path('viewrecipe/', views.viewrecipe, name='viewrecipe'),
-    path('myrecipes/', views.myrecipes, name='myrecipes'),
-    path('viewrecipe/<str:cuisine_name>/<slug:recipe_name_slug>/',
-         views.view_recipe, name='view_recipe'),
-    path('raterecipe/', views.rate_recipe, name='raterecipe'),
+    path('', home, name='home'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', UserLoginView.as_view(), name='login'),
+    path('logout/', UserLogoutView.as_view(), name='logout'),
+    path('cuisine/', CuisineView.as_view(), name='cuisine'),
+    path('italian/', ItalianView.as_view(), name='italian'),
+    path('chinese/', ChineseView.as_view(), name='chinese'),
+    path('thai/', ThaiView.as_view(), name='thai'),
+    path('indian/', IndianView.as_view(), name='indian'), 
+    path('addrecipe/', AddRecipeView.as_view(), name='addrecipe'),
+    path('myrecipes/', MyRecipesView.as_view(), name='myrecipes'),
+    path('viewrecipe/<str:cuisine_name>/<slug:recipe_name_slug>/', 
+         ViewRecipeView.as_view(), name='view_recipe'),
+    path('raterecipe/', rate_recipe, name='raterecipe'),
 ]
