@@ -21,7 +21,7 @@
 
             {% if recipes %}
                     {% for recipe in recipes %}
-                        <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
+                        <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a></li>
                     {% endfor %}
                 {% else %}
                     Sorry we don't have any Thai recipes yet. Please register and add some
