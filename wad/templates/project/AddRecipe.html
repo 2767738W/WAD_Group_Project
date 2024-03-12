@@ -1,55 +1,62 @@
 {% extends 'project/base.html' %}
 {% load staticfiles %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style>
-        /* Add your CSS styles here */
-        .recipe-list {
-            margin-bottom: 20px;
-        }
-        .recipe-list li {
-            margin-bottom: 10px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Recipe</title>
     {% block additionalhead %}
-    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'wad/css/sideBar.css' %}">
     <link rel="stylesheet" href="{% static 'wad/css/mainBodyStyle.css' %}">
+    <style>
+        .section-padding {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    </style>
     {% endblock %}
-    
 </head>
 <body>
 {% block body_block %}
-    <div class="content-container">
-        <div class="sidebar">
+<div class="container mt-5 section-padding">
+    <div class="row">
+        <div class="col-md-4">
             <h2>Top Ten Current Meals</h2>
-            <ul class="recipe-list">
+            <ul class="list-group">
                 {% for recipe in recipes %}
                 <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
-        <div class="main-content">
+        <div class="col-md-8 section-padding">
             <h2>Add Recipe</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <label for="photo">Add Photo:</label>
-                <input type="file" id="photo" name="photo"><br>
-                
-                <label for="recipe_name">Recipe Name:</label>
-                <input type="text" id="recipe_name" name="recipe_name"><br>
-                
-                <h3>Ingredients:</h3>
-                <textarea name="ingredients" rows="4" cols="50"></textarea><br>
-                
-                <h3>How to Make:</h3>
-                <textarea name="instructions" rows="8" cols="50"></textarea><br>
-                
-                <input type="submit" value="Submit">
+                <div class="form-group">
+                    <label for="photo">Add Photo:</label>
+                    <input type="file" class="form-control-file" id="photo" name="photo">
+                </div>
+                <div class="form-group">
+                    <label for="recipe_name">Recipe Name:</label>
+                    <input type="text" class="form-control" id="recipe_name" name="recipe_name">
+                </div>
+                <div class="form-group">
+                    <h3>Ingredients:</h3>
+                    <textarea class="form-control" name="ingredients" rows="4" cols="50"></textarea>
+                </div>
+                <div class="form-group">
+                    <h3>How to Make:</h3>
+                    <textarea class="form-control" name="instructions" rows="8" cols="50"></textarea>
+                </div>
+                <div class="form-group section-padding">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
             </form>
         </div>
     </div>
+</div>
 {% endblock %}
 </body>
 </html>

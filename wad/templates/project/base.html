@@ -134,23 +134,10 @@
     setTheme(newTheme);
   }
 
-  function initializeTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      const userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(userPrefersDark ? 'dark' : 'light');
-    }
-  }
-
-
   document.getElementById('bd-theme').addEventListener('click', toggleTheme);
 
 
   initializeTheme();
 </script>
-
-
 </body>
 </html>
