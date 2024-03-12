@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.urls import reverse
+from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
+from django.utils.decorators import method_decorator
 from wad.forms import RecipeForm, UserForm, UserProfileForm
-from wad.models import Recipe, starRating
+from wad.models import Recipe, starRating, UserProfile
 
 
 #class HomeView(View):
@@ -134,7 +137,6 @@ class UserLogoutView(View):
         logout(request)
         return redirect(reverse('wad:home'))
 
-
 class RegisterView(View):
     def get(self, request):
         user_form = UserForm()
@@ -159,9 +161,10 @@ class RegisterView(View):
 
 
 class MyRecipesView(View):
-    @login_required
+    @method_decorator(login_required)
     def get(self, request):
-        user_recipes = Recipe.objects.filter(user=request.user)
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_recipes = Recipe.objects.filter(user=user_profile)
         return render(request, 'project/MyRecipes.html', {'user_recipes': user_recipes})
 
 
