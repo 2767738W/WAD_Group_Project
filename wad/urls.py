@@ -4,6 +4,8 @@ from wad.views import (
     ItalianView, ChineseView, ThaiView, IndianView, AddRecipeView,
     ViewRecipeView, MyRecipesView, rate_recipe
 )
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'wad'
 
@@ -23,3 +25,7 @@ urlpatterns = [
          ViewRecipeView.as_view(), name='view_recipe'),
     path('raterecipe/', rate_recipe, name='raterecipe'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,10 +3,19 @@ from django.contrib.auth.models import User
 from django.db.models import Avg
 from django.template.defaultfilters import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
+import os
+from uuid import uuid4
 
 
 def user_directory_path(instance, filename):
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
+    # Get the file extension
+    _, ext = os.path.splitext(filename)
+    
+    # Generate a unique filename using UUID
+    unique_filename = f"{uuid4()}{ext}"
+
+    # Return the path to the upload location
+    return unique_filename
 
 
 class UserProfile(models.Model):

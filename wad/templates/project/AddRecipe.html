@@ -26,13 +26,13 @@
             <h2>Top Ten Current Meals</h2>
             <ul class="list-group">
                 {% for recipe in recipes %}
-                <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
+                <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
         <div class="col-md-8 section-padding">
             <h2>Add Recipe</h2>
-            <form method="post" enctype="multipart/form-data">
+            {% comment %} <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="photo">Add Photo:</label>
@@ -52,6 +52,14 @@
                 </div>
                 <div class="form-group section-padding">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form> {% endcomment %}
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }} {# Include the Django RecipeForm #}
+                <div class="form-group section-padding">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>

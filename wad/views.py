@@ -75,19 +75,45 @@ class IndianView(View):
         
 
 
+# class AddRecipeView(View):
+#     def get(self, request):
+#         form = RecipeForm()
+#         top_ten_recipes = Recipe.objects.annotate(avg_rating=Avg('starrating__rating')).order_by('-avg_rating')[:10]
+#         return render(request, 'project/AddRecipe.html', {'form': form, 'recipes': top_ten_recipes})
+
+#     def post(self, request):
+#         form = RecipeForm(request.POST)
+#         if form.is_valid():
+#             recipe = form.save(commit=False)
+#             recipe.user = request.user
+#             recipe.save()
+#             return redirect(reverse('wad:view_recipe', kwargs={'recipe_name_slug': recipe.slug}))
+#         else:
+#             top_ten_recipes = Recipe.objects.annotate(avg_rating=Avg('starrating__rating')).order_by('-avg_rating')[:10]
+#             return render(request, 'project/AddRecipe.html', {'form': form, 'recipes': top_ten_recipes})
+        
+        
 class AddRecipeView(View):
+    template_name = 'project/AddRecipe.html'
+
     def get(self, request):
         form = RecipeForm()
         top_ten_recipes = Recipe.objects.annotate(avg_rating=Avg('starrating__rating')).order_by('-avg_rating')[:10]
         return render(request, 'project/AddRecipe.html', {'form': form, 'recipes': top_ten_recipes})
 
     def post(self, request):
-        form = RecipeForm(request.POST)
+        form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
             recipe = form.save(commit=False)
-            recipe.user = request.user
+            
+            # Assuming you want to associate the recipe with the currently logged-in user
+            if request.user.is_authenticated:
+                user_profile = request.user.userprofile
+                recipe.user = user_profile
+            
             recipe.save()
-            return redirect(reverse('wad:view_recipe', kwargs={'recipe_name_slug': recipe.slug}))
+
+            return redirect(reverse('wad:view_recipe', kwargs={'cuisine_name': recipe.cuisine, 'recipe_name_slug': recipe.slug}))
         else:
             top_ten_recipes = Recipe.objects.annotate(avg_rating=Avg('starrating__rating')).order_by('-avg_rating')[:10]
             return render(request, 'project/AddRecipe.html', {'form': form, 'recipes': top_ten_recipes})

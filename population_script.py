@@ -5,6 +5,7 @@ import django
 django.setup()
 from wad.models import Recipe, UserProfile, starRating
 from django.contrib.auth.models import User
+from django.core.files import File
 
 
 
@@ -354,25 +355,32 @@ def add_recipes(recipes):
         
         cuisine_key = recipe_data['cuisine'].lower()  # Convert cuisine to lowercase
         cuisine_display = dict(Recipe.CUISINE_CHOICES).get(cuisine_key)
+        
+        image_filename = recipe_data['image']
+        image_path_source = os.path.join('popscriptimages', image_filename)
 
-        if not cuisine_display:
-            print(f"Invalid cuisine: {recipe_data['cuisine']}")
-            continue
+        with open(image_path_source, 'rb') as image_file:
+            # Create a Django File object from the image file
+            image = File(image_file)
 
-        recipe, created = Recipe.objects.get_or_create(
-            name=recipe_data['name'],
-            user=user_profile,
-            cuisine=cuisine_key,
-            ingredients=recipe_data['ingredients'],
-            instructions=recipe_data['instructions'],
-            image=recipe_data['image'],
-            slug=recipe_data['name'].lower().replace(' ', '-'),
-        )
+            if not cuisine_display:
+                print(f"Invalid cuisine: {recipe_data['cuisine']}")
+                continue
 
-        if created:
-            print(f"Recipe '{recipe.name}' created with cuisine '{cuisine_display}'.")
-        else:
-            print(f"Recipe '{recipe.name}' already exists.")
+            recipe, created = Recipe.objects.get_or_create(
+                name=recipe_data['name'],
+                user=user_profile,
+                cuisine=cuisine_key,
+                ingredients=recipe_data['ingredients'],
+                instructions=recipe_data['instructions'],
+                image=image,
+                slug=recipe_data['name'].lower().replace(' ', '-'),
+            )
+
+            if created:
+                print(f"Recipe '{recipe.name}' created with cuisine '{cuisine_display}'.")
+            else:
+                print(f"Recipe '{recipe.name}' already exists.")
     
 
 def add_user():
@@ -383,8 +391,11 @@ def add_user():
     user, created = User.objects.get_or_create(
         username=username,
         email=email,
-        defaults={'password': password}
     )
+    
+    user.set_password(password)
+    
+    user.save()
 
     if created:
         user_profile, _ = UserProfile.objects.get_or_create(
