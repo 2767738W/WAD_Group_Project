@@ -80,6 +80,12 @@
                     <div class="recipe-photo">
                         <!-- Add your photo here -->
                         <img src="{% static 'path/to/your/photo.jpg' %}" alt="Recipe Photo">
+                        <div class="star-rating">
+                            <!-- Render stars based on the average star rating -->
+                            {% for _ in "x"|rjust:recipe.avg_star_rating %}
+                                <span class="star">&#9733;</span>
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="star-rating">
                         <input type="radio" id="star5" name="rating" value="5">
@@ -101,6 +107,8 @@
                         <p>{{ recipe.ingredients }}</p>
                         <h3>How to Make:</h3>
                         <p>{{ recipe.instructions }}</p>
+                        <h3>Average Rating:</h3>
+                        <p>{{ recipe.avg_star_rating }}</p>
                     </div>
                 </div>
             </div>

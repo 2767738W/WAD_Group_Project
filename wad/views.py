@@ -161,7 +161,6 @@ class RegisterView(View):
 
 
 class MyRecipesView(View):
-    @method_decorator(login_required)
     def get(self, request):
         user_profile = UserProfile.objects.get(user=request.user)
         user_recipes = Recipe.objects.filter(user=user_profile)
