@@ -2,7 +2,7 @@ from django.urls import path
 from wad.views import (
     home, RegisterView, UserLoginView, UserLogoutView, CuisineView,
     ItalianView, ChineseView, ThaiView, IndianView, AddRecipeView,
-    ViewRecipeView, MyRecipesView, rate_recipe
+    ViewRecipeView, MyRecipesView, rate_recipe, RecipeDeleteView
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,6 +24,7 @@ urlpatterns = [
     path('viewrecipe/<str:cuisine_name>/<slug:recipe_name_slug>/', 
          ViewRecipeView.as_view(), name='view_recipe'),
     path('raterecipe/', rate_recipe, name='raterecipe'),
+    path('recipes/<int:pk>/delete/', RecipeDeleteView.as_view(), name='recipe_delete'),
 ]
 
 

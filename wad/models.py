@@ -24,7 +24,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     forename = models.CharField(max_length=NAME_MAX_LENGTH)
     surname = models.CharField(max_length=NAME_MAX_LENGTH)
-    dateOfBirth = models.DateField()
+    dateOfBirth = models.DateField(null=False, default=None)
     email = models.EmailField()
 
     website = models.URLField(blank=True)
@@ -74,6 +74,9 @@ class starRating(models.Model):
             MinValueValidator(limit_value=0)
         ]
     )    
+
+    def __str__(self):
+        return f"{self.user} - {self.recipe} - {self.rating}"
 
     
     

@@ -151,8 +151,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to send rating to server using AJAX
     function rateRecipe(rating) {
+    const recipeId = 1;  // Replace with the actual recipe ID
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/rate_recipe/', true);  // Update URL if necessary
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                console.log('Rating submitted successfully');
+            } else {
+                console.error('Error submitting rating:', xhr.statusText);
+            }
+        }
+    };
+    const data = JSON.stringify({ rating: rating, recipe_id: recipeId });
+    xhr.send(data);
+}
+
+
+    // Function to send rating to server using AJAX
+    /*function rateRecipe(rating) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', "{% url 'wad:raterecipe' %}", true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -163,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
         xhr.send('rating=' + rating);
-    }
+    }*/
 });
 </script>
 

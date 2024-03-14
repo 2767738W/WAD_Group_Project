@@ -24,6 +24,10 @@
                             <p class="card-text"><strong>Cuisine:</strong> {{ recipe.cuisine }}</p>
                             <p class="card-text"><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
                             <p class="card-text"><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+                            <form action="{% url 'wad:recipe_delete' pk=recipe.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete Recipe</button>
+                            </form>
                         </div>
                     </div>
                 </div>

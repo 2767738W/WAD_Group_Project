@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DeleteView
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -192,8 +193,21 @@ class MyRecipesView(View):
         user_recipes = Recipe.objects.filter(user=user_profile)
         return render(request, 'project/MyRecipes.html', {'user_recipes': user_recipes})
 
+def rate_recipe(request):
+    if request.method == 'POST' and request.is_ajax():
+        try:
+            rating = int(request.POST.get('rating'))
+            recipe_id = int(request.POST.get('recipe_id'))
 
-@require_POST
+            # Update the database with the new rating
+            Recipe.objects.filter(id=recipe_id).update(avg_star_rating=rating)
+            
+            return JsonResponse({'message': 'Rating submitted successfully'})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+"""@require_POST
 def rate_recipe(request):
     try:
         recipe_id = request.POST['recipe_id']
@@ -203,8 +217,25 @@ def rate_recipe(request):
             return JsonResponse({'error': 'Invalid rating value'}, status=400)
 
         recipe = get_object_or_404(Recipe, pk=recipe_id)
-        starRating.objects.create(recipeID=recipe, rating=rating)
 
-        return JsonResponse({'message': 'Rating submitted successfully'})
+        # Create or update starRating instance
+        star_rating, _ = starRating.objects.get_or_create(recipeID=recipe, userID=request.user)
+        star_rating.rating = rating
+        star_rating.save()
+
+        # Recalculate average rating for the recipe
+        new_avg_rating = recipe.starRating.aggregate(models.Avg('rating'))['rating__avg']
+        recipe.avg_star_rating = new_avg_rating or 0  # Set to 0 if no ratings yet
+        recipe.save()
+
+        return JsonResponse({'message': 'Rating submitted successfully', 'new_avg_rating': new_avg_rating})
+    except KeyError:
+        return JsonResponse({'error': 'Missing required parameters'}, status=400)
+    except ValueError:
+        return JsonResponse({'error': 'Invalid data format'}, status=400)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return JsonResponse({'error': str(e)}, status=500)"""
+
+class RecipeDeleteView(DeleteView):
+    model = Recipe
+    success_url = reverse_lazy('wad:myrecipes')
