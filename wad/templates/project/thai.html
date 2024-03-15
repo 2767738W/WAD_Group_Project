@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title_block %}
-<title>Thai</title>
+<title>Thai Page</title>
 {% endblock %}
 
 {% block heading_block %}
@@ -15,7 +15,7 @@ Thai
 
 <div class="row align-items-md-stretch">
   <div class="col-md-6">
-    <div class="h-100 p-5 text-bg-dark rounded-3">
+    <div class="h-100 p-5 rounded-3">
       <ul class="list-group mt-3 mb-3">
         {% if recipes %}
             {% for recipe in recipes %}
@@ -28,8 +28,7 @@ Thai
     </div>
   </div>
   <div class="col-md-6">
-    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-      <h2>Image</h2>
+    <div class="h-100 p-5 rounded-3">
       <img src="{% static 'images/thai2.jpg' %}" alt="Photo" class="img-fluid" style="margin-top: 40px;" width="auto">
     </div>
   </div>
