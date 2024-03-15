@@ -1,5 +1,5 @@
 {% extends 'project/base.html' %}
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,32 +8,43 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'wad/css/sideBar.css' %}">
     <link rel="stylesheet" href="{% static 'wad/css/mainBodyStyle.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     {% endblock %}
 </head>
 <body>
 {% block body_block %}
-    <div class="content-container">
-        <div class="sidebar">
-        </div>
-        <ul>
-            {% if user.is_authenticated %}
-                    <li><a href="{% url 'wad:addrecipe' %}">Add Recipe</a></li>
-            {% endif %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Content Container -->
+            <div class="col-md-3">
+                <div class="content-container">
+                    <div class="sidebar">
+                    </div>
+                    <ul>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'wad:addrecipe' %}">Add Recipe</a></li>
+                        {% endif %}
+                        {% if recipes %}
+                            {% for recipe in recipes %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            Sorry we don't have any Thai recipes yet. Please register and add some.
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
 
-            {% if recipes %}
-                    {% for recipe in recipes %}
-                        <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a></li>
-                    {% endfor %}
-                {% else %}
-                    Sorry we don't have any Thai recipes yet. Please register and add some
-                {% endif %}
-        </ul>
-        <div class="main-content">
-            <img src="/static/images/thai.jpg" alt="Photo" style="width: 100%; height: auto; margin-top: 40px;">
+            <!-- Image Container -->
+            <div class="col-md-9">
+                <div class="image-right">
+                    <img src="{% static 'images/thai2.jpg' %}" alt="Thai Cuisine" class="img-fluid">
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
 </body>
 </html>
-
-
