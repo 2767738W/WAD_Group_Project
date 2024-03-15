@@ -1,53 +1,37 @@
 {% extends 'project/base.html' %}
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    {% block title %}Thai{% endblock %}
-    {% block additionalhead %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'wad/css/sideBar.css' %}">
-    <link rel="stylesheet" href="{% static 'wad/css/mainBodyStyle.css' %}">
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    
-    {% endblock %}
-</head>
-<body>
-{% block body_block %}
-    <div class="text-center">
-        <h1>Thai</h1>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3 mt-3 mb-3">
-                
-                {% if user.is_authenticated %}
-                    <div class="add-recipe-link">
-                        <a href="{% url 'wad:addrecipe' %}">Add Recipe</a>
-                    </div>
-                {% endif %}
-                
-                
-                <ul class="list-group mt-3 mb-3">
-                    {% if recipes %}
-                        {% for recipe in recipes %}
-                            <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a></li>
-                        {% endfor %}
-                    {% else %}
-                        <li class="list-group-item">Sorry we don't have any Thai recipes yet. Please register and add some</li>
-                    {% endif %}
-                </ul>
-            </div>
-            <div class="col-md-9">
-                <img src="{% static 'images/thai2.jpg' %}" alt="Photo" class="img-fluid" style="margin-top: 40px;">
-            </div>
-        </div>
-    </div>
+{% load staticfiles %}
+
+{% block title_block %}
+<title>Thai</title>
 {% endblock %}
-<!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+
+{% block heading_block %}
+Thai
+{% endblock %}
+
+{% block body_block %}
+<p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it to your liking.</p>
+<a href="{% url 'wad:addrecipe' %}">Add Recipe</a>
+
+<div class="row align-items-md-stretch">
+  <div class="col-md-6">
+    <div class="h-100 p-5 text-bg-dark rounded-3">
+      <ul class="list-group mt-3 mb-3">
+        {% if recipes %}
+            {% for recipe in recipes %}
+                <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a></li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item">Sorry we don't have any Thai recipes yet. Please register and add some</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+      <h2>Image</h2>
+      <img src="{% static 'images/thai2.jpg' %}" alt="Photo" class="img-fluid" style="margin-top: 40px;" width="auto">
+    </div>
+  </div>
+</div>
+{% endblock %}
