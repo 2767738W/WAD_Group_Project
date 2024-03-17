@@ -24,7 +24,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     forename = models.CharField(max_length=NAME_MAX_LENGTH)
     surname = models.CharField(max_length=NAME_MAX_LENGTH)
-    dateOfBirth = models.DateField(null=True, default=None)
+    dateOfBirth = models.DateField(null=True, blank=True)
     email = models.EmailField()
 
     website = models.URLField(blank=True)

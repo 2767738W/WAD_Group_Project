@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from wad.models import UserProfile,Recipe,starRating
+from wad.models import UserProfile,Recipe, starRating
 from django.core.exceptions import ValidationError
 
 
@@ -57,7 +57,7 @@ class UserForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput())
     forename = forms.CharField(max_length=128)
     surname = forms.CharField(max_length=128)
-    dateOfBirth = forms.DateField(label="Date of Birth")
+    dateOfBirth = forms.DateField(label="Date of Birth", required=True)
     email = forms.EmailField()
 
     class Meta:
@@ -81,5 +81,11 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('website', 'picture',)
 
-class starRating(forms.ModelForm):
-    rating = forms.CharField
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = starRating
+        fields = ['rating', 'recipeID']
+
+    def __init__(self, *args, **kwargs):
+        super(RatingForm, self).__init__(*args, **kwargs)
+        self.fields['recipe'].widget = forms.HiddenInput() 

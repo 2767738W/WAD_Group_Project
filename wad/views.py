@@ -10,8 +10,8 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.utils.decorators import method_decorator
-from wad.forms import RecipeForm, UserForm, UserProfileForm
-from wad.models import Recipe, starRating, UserProfile
+from wad.forms import RecipeForm, UserForm, UserProfileForm, RatingForm
+from wad.models import Recipe, UserProfile
 
 
 #class HomeView(View):
@@ -137,6 +137,17 @@ class ViewRecipeView(View):
             context_dict['recipe'] = None
 
         return render(request, 'project/ViewRecipe.html', context=context_dict)
+    
+    def post(self, request, cuisine_name, recipe_name_slug):
+        # Handle POST request for rating submission
+        rating = request.POST.get('rating')  # Access the rating value
+        if rating is not None:
+            # Process the rating submission (you can implement this logic)
+            return redirect('wad:view_recipe', cuisine_name=cuisine_name, recipe_name_slug=recipe_name_slug)
+        else:
+            # Handle other POST requests
+            # Add your logic here if necessary
+            pass
         
 
 
@@ -195,46 +206,19 @@ class MyRecipesView(View):
 
 def rate_recipe(request):
     if request.method == 'POST' and request.is_ajax():
-        try:
-            rating = int(request.POST.get('rating'))
-            recipe_id = int(request.POST.get('recipe_id'))
-
-            # Update the database with the new rating
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            rating = form.cleaned_data['rating']
+            recipe_id = form.cleaned_data['recipe_id']
+            
             Recipe.objects.filter(id=recipe_id).update(avg_star_rating=rating)
             
             return JsonResponse({'message': 'Rating submitted successfully'})
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+        else:
+            return JsonResponse({'error': form.errors}, status=400)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
-"""@require_POST
-def rate_recipe(request):
-    try:
-        recipe_id = request.POST['recipe_id']
-        rating = int(request.POST['rating'])
-
-        if rating < 1 or rating > 5:
-            return JsonResponse({'error': 'Invalid rating value'}, status=400)
-
-        recipe = get_object_or_404(Recipe, pk=recipe_id)
-
-        # Create or update starRating instance
-        star_rating, _ = starRating.objects.get_or_create(recipeID=recipe, userID=request.user)
-        star_rating.rating = rating
-        star_rating.save()
-
-        # Recalculate average rating for the recipe
-        new_avg_rating = recipe.starRating.aggregate(models.Avg('rating'))['rating__avg']
-        recipe.avg_star_rating = new_avg_rating or 0  # Set to 0 if no ratings yet
-        recipe.save()
-
-        return JsonResponse({'message': 'Rating submitted successfully', 'new_avg_rating': new_avg_rating})
-    except KeyError:
-        return JsonResponse({'error': 'Missing required parameters'}, status=400)
-    except ValueError:
-        return JsonResponse({'error': 'Invalid data format'}, status=400)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)"""
+        
 
 class RecipeDeleteView(DeleteView):
     model = Recipe

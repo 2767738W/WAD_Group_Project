@@ -67,7 +67,6 @@
 <body>
 {% block body_block %}
     {% if recipe %}
-
         <div class="content-container">
             <div class="sidebar">
             </div>
@@ -83,25 +82,26 @@
                         <!-- Add your photo here -->
                         <img src="{% load static %}{% get_media_prefix %}{{ recipe.image }}" alt="Recipe Photo">
                         <div class="star-rating">
-                            <!-- Render stars based on the average star rating -->
-                            {% for _ in "x"|rjust:recipe.avg_star_rating %}
-                                <span class="star">&#9733;</span>
-                            {% endfor %}
                         </div>
                     </div>
-                    <div class="star-rating">
-                        <input type="radio" id="star5" name="rating" value="5">
-                        <label for="star5">☆</label>
-                        <input type="radio" id="star4" name="rating" value="4">
-                        <label for="star4">☆</label>
-                        <input type="radio" id="star3" name="rating" value="3">
-                        <label for="star3">☆</label>
-                        <input type="radio" id="star2" name="rating" value="2">
-                        <label for="star2">☆</label>
-                        <input type="radio" id="star1" name="rating" value="1">
-                        <label for="star1">☆</label>
-                    </div>
-                    <button id="submitRating">Submit Rating</button>
+                    <!-- Rating form -->
+                    <form id="ratingForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5">
+                            <label for="star5">☆</label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4">☆</label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3">☆</label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2">☆</label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1">☆</label>
+                        </div>
+                        <button type="button" id="submitRatingBtn" class="btn btn-primary">Submit Rating</button>
+                    </form>
                     <div class="recipe-details">
                         <h3>Recipe Name:</h3>
                         <p>{{ recipe.name }}</p>
@@ -119,70 +119,50 @@
         Error - This Recipe Does Not Exist
     {% endif %}
 {% endblock %}
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const stars = document.querySelectorAll('.star-rating input[type="radio"]');
-    const submitBtn = document.getElementById('submitRating');
+    const ratingForm = document.getElementById('ratingForm');
+    const submitRatingBtn = document.getElementById('submitRatingBtn');
 
-    stars.forEach(function(star) {
-        // Event listener for clicking on radio buttons
-        star.addEventListener('click', function() {
-            const selectedRating = parseInt(star.value);
-            highlightStars(selectedRating); // Highlight stars up to the clicked one
-        });
+    console.log("DOM content loaded."); // Check if DOM content is loaded
+
+    submitRatingBtn.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default button click behavior
+        const formData = new FormData(ratingForm);
+        const recipeId = formData.get('recipe_id');
+        const rating = formData.get('rating');
+        console.log("Recipe ID:", recipeId); // Check if recipe ID is captured
+        console.log("Rating:", rating); // Check if rating is captured
+        rateRecipe(recipeId, rating);
+        rateRecipe(recipeId, rating);
     });
 
-    submitBtn.addEventListener('click', function() {
-        const selectedRating = document.querySelector('.star-rating input:checked').value;
-        console.log('Submit button clicked with rating: ' + selectedRating);
-        // Example: Send rating to server using AJAX
-        rateRecipe(selectedRating);
-    });
+    function rateRecipe(recipeId, rating) {
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value; // Get CSRF token
 
-    // Function to highlight stars up to a certain rating
-    function highlightStars(rating) {
-        stars.forEach(function(star, index) {
-            const label = star.nextElementSibling; // Get the corresponding label
-            if (index < rating) {
-                label.classList.add('active');
+        fetch("{% url 'wad:raterecipe' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ rating: rating, recipe_id: recipeId })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Rating submitted successfully');
+                // Update the page content as needed (e.g., display a success message)
             } else {
-                label.classList.remove('active');
+                console.error('Error submitting rating:', response.statusText);
+                // Handle error (e.g., display an error message)
             }
+        })
+        .catch(error => {
+            console.error('Error submitting rating:', error);
+            // Handle error (e.g., display an error message)
         });
     }
-
-    function rateRecipe(rating) {
-    const recipeId = 1;  // Replace with the actual recipe ID
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/rate_recipe/', true);  // Update URL if necessary
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                console.log('Rating submitted successfully');
-            } else {
-                console.error('Error submitting rating:', xhr.statusText);
-            }
-        }
-    };
-    const data = JSON.stringify({ rating: rating, recipe_id: recipeId });
-    xhr.send(data);
-}
-
-
-    // Function to send rating to server using AJAX
-    /*function rateRecipe(rating) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', "{% url 'wad:raterecipe' %}", true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log(xhr.responseText);
-                // Handle response as needed
-            }
-        };
-        xhr.send('rating=' + rating);
-    }*/
 });
 </script>
 
