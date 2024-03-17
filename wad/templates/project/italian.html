@@ -17,7 +17,8 @@ Italian
 <div class="row align-items-md-stretch">
   <div class="col-md-6">
     <div class="h-100 p-5 rounded-3">
-      <ul class="list-group mt-3 mb-3">
+      <input type="text" id="searchInput" onkeyup="filterRecipes()" placeholder="Search for recipes...">
+      <ul class="list-group mt-3 mb-3" id="recipeList">
         {% if recipes %}
             {% for recipe in recipes %}
                 <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a></li>
@@ -34,6 +35,27 @@ Italian
     </div>
   </div>
 </div>
+
+<script>
+  // function to filter recipes based on user input
+  function filterRecipes() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("recipeList");
+    li = ul.getElementsByTagName('li');
+    for (i = 0; i < li.length; i++) {
+      a = li[i].getElementsByTagName("a")[0];
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }
+</script>
+
 {% endblock %}
 
 
