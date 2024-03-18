@@ -22,6 +22,15 @@
             width: 40%; 
             margin-right: 20px; 
         }
+        
+        .recipe-photo img {
+            max-width: 100%;  /* ensures the image is no wider than its container */
+            max-height: 400px; /* replace 400px with the maximum height you want */
+            width: auto;       /* ensures the width scales with the height */
+            height: auto;      /* maintains the aspect ratio */
+            display: block;    /* prevents inline spacing */
+        }
+        
 
         .recipe-details {
             width: 60%; 
