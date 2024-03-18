@@ -18,6 +18,7 @@ Thai
   <div class="col-md-6">
     <div class="h-100 p-5 rounded-3">
       <input type="text" id="searchInput" onkeyup="filterRecipes()" placeholder="Search for recipes...">
+      <input type="text" id="ingredientsInput" onkeyup="filterIngredients()" placeholder="Search for ingredients...">
       <ul class="list-group mt-3 mb-3" id="recipeList">
         {% if recipes %}
             {% for recipe in recipes %}
@@ -50,6 +51,23 @@ Thai
       a = li[i].getElementsByTagName("a")[0];
       txtValue = a.textContent || a.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }
+
+  // Function to filter recipes by ingredients
+  function filterIngredients() {
+    var input, filter, ul, li, ingredients, i;
+    input = document.getElementById('ingredientsInput');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("recipeList");
+    li = ul.getElementsByTagName('li');
+    for (i = 0; i < li.length; i++) {
+      ingredients = li[i].dataset.ingredients.toUpperCase();
+      if (ingredients.indexOf(filter) > -1) {
         li[i].style.display = "";
       } else {
         li[i].style.display = "none";
