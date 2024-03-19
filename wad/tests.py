@@ -74,6 +74,21 @@ class TestViews(TestCase):
         response = self.client.get(reverse('wad:addrecipe'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'project/AddRecipe.html')
+        
+        image_filename = 'charsiu.jpg'
+        image_path_source = os.path.join('../popscriptimages', image_filename)
+        
+        data = {
+            'name': 'Test Recipe',
+            'cuisine': 'italian',
+            'ingredients': 'Test ingredient 1, Test ingredient 2',
+            'instructions': 'Test instructions',
+            'image': image_path_source,  # You may need to provide a file for image field
+        }
+        response = self.client.post(reverse('wad:addrecipe'), data, format='multipart')
+        self.assertTrue(Recipe.objects.filter(name='Test Recipe').exists())
+        created_recipe = Recipe.objects.get(name='Test Recipe')
+        self.assertEqual(created_recipe.user, self.user.userprofile)
 
 
     def test_view_recipe_view(self):
