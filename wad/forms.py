@@ -79,4 +79,6 @@ class RatingForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RatingForm, self).__init__(*args, **kwargs)
-        self.fields['recipe'].widget = forms.HiddenInput() 
+        self.fields['recipeID'].widget = forms.HiddenInput()
+
+

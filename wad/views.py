@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.utils.decorators import method_decorator
 from wad.forms import RecipeForm, UserForm, UserProfileForm, RatingForm
-from wad.models import Recipe, UserProfile
+from wad.models import Recipe, UserProfile, starRating
 
 
 #class HomeView(View):
@@ -138,16 +138,6 @@ class ViewRecipeView(View):
 
         return render(request, 'project/ViewRecipe.html', context=context_dict)
     
-    def post(self, request, cuisine_name, recipe_name_slug):
-        # Handle POST request for rating submission
-        rating = request.POST.get('rating')  # Access the rating value
-        if rating is not None:
-            # Process the rating submission (you can implement this logic)
-            return redirect('wad:view_recipe', cuisine_name=cuisine_name, recipe_name_slug=recipe_name_slug)
-        else:
-            # Handle other POST requests
-            # Add your logic here if necessary
-            pass
         
 
 
@@ -204,20 +194,32 @@ class MyRecipesView(View):
         user_recipes = Recipe.objects.filter(user=user_profile)
         return render(request, 'project/MyRecipes.html', {'user_recipes': user_recipes})
 
+@login_required
 def rate_recipe(request):
-    if request.method == 'POST' and request.is_ajax():
-        form = RatingForm(request.POST)
-        if form.is_valid():
-            rating = form.cleaned_data['rating']
-            recipe_id = form.cleaned_data['recipe_id']
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        recipe_id = request.POST.get('recipeID')
+
+        if rating is not None and recipe_id is not None:
+            # Retrieve the Recipe object
+            recipe = get_object_or_404(Recipe, id=recipe_id)
             
-            Recipe.objects.filter(id=recipe_id).update(avg_star_rating=rating)
+            # Retrieve the UserProfile associated with the authenticated user
+            user_profile = request.user.userprofile
             
-            return JsonResponse({'message': 'Rating submitted successfully'})
+            # Create a new starRating object
+            star_rating = starRating.objects.create(userID=user_profile, recipeID=recipe, rating=rating)
+            
+            # Recalculate the average rating of the recipe
+            avg_rating = recipe.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
+            
+            return JsonResponse({'message': 'Rating submitted successfully', 'avg_rating': avg_rating})
         else:
-            return JsonResponse({'error': form.errors}, status=400)
+            return JsonResponse({'error': 'Rating or Recipe ID missing'}, status=400)
     else:
-        return JsonResponse({'error': 'Invalid request'}, status=400)
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
         
 
 class RecipeDeleteView(DeleteView):

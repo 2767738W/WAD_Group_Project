@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models import Avg
 from django.template.defaultfilters import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import os
 from uuid import uuid4
 
@@ -55,13 +57,13 @@ class Recipe(models.Model):
     slug = models.SlugField(unique=True)
 
     def avg_star_rating(self):
-        return self.starrating_set.aggregate(Avg('rating'))['rating__avg'] or 0
+        # Calculate the average rating using aggregation
+        avg_rating = self.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating']
+        return avg_rating if avg_rating is not None else 0
 
     def save(self, *args, **kwargs):
-        # Update the average star rating whenever the recipe is saved
         if not self.slug:
             self.slug = slugify(self.name)
-        self.avg_star_rating = self.avg_star_rating()  # Update the average star rating
         super().save(*args, **kwargs)
         
 class starRating(models.Model):
@@ -79,6 +81,14 @@ class starRating(models.Model):
         return f"{self.user} - {self.recipe} - {self.rating}"
     
     
+
+@receiver(post_save, sender=starRating)
+def update_recipe_avg_rating(sender, instance, created, **kwargs):
+    if created:
+        # If a new rating is created, update the average rating of the associated recipe
+        avg_rating = instance.recipeID.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
+        instance.recipeID.avg_star_rating = avg_rating
+        instance.recipeID.save()
 
     
     

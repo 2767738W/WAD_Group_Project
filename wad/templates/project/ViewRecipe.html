@@ -81,9 +81,9 @@
                         </div>
                     </div>
                     <!-- Rating form -->
-                    <form id="ratingForm">
+                    <form id="ratingForm" method="post" action="{% url 'wad:raterecipe' %}">
                         {% csrf_token %}
-                        <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+                        <input type="hidden" name="recipeID" value="{{ recipe.id }}">
                         <div class="star-rating">
                             <input type="radio" id="star5" name="rating" value="5">
                             <label for="star5">☆</label>
@@ -96,8 +96,9 @@
                             <input type="radio" id="star1" name="rating" value="1">
                             <label for="star1">☆</label>
                         </div>
-                        <button type="button" id="submitRatingBtn" class="btn btn-primary">Submit Rating</button>
+                        <button type="submit" class="btn btn-primary">Submit Rating</button>
                     </form>
+                    
                     <div class="recipe-details">
                         <h3>Recipe Name:</h3>
                         <p>{{ recipe.name }}</p>
@@ -119,23 +120,22 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ratingForm = document.getElementById('ratingForm');
-    const submitRatingBtn = document.getElementById('submitRatingBtn');
 
-    console.log("DOM content loaded."); // Check if DOM content is loaded
+    ratingForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission behavior
 
-    submitRatingBtn.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default button click behavior
         const formData = new FormData(ratingForm);
-        const recipeId = formData.get('recipe_id');
+        const recipeId = formData.get('recipeID');
         const rating = formData.get('rating');
-        console.log("Recipe ID:", recipeId); // Check if recipe ID is captured
-        console.log("Rating:", rating); // Check if rating is captured
-        rateRecipe(recipeId, rating);
+
+        console.log("Recipe ID:", recipeId);
+        console.log("Rating:", rating);
+
         rateRecipe(recipeId, rating);
     });
 
     function rateRecipe(recipeId, rating) {
-        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value; // Get CSRF token
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
         fetch("{% url 'wad:raterecipe' %}", {
             method: 'POST',
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrfToken
             },
-            body: JSON.stringify({ rating: rating, recipe_id: recipeId })
+            body: JSON.stringify({ rating: rating, recipeID: recipeId })
         })
         .then(response => {
             if (response.ok) {
