@@ -32,16 +32,30 @@
         </div>
         <div class="col-md-8 section-padding">
             <h2>Add Recipe</h2>
-            <form method="post" enctype="multipart/form-data">
+            <form id="addRecipeForm" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }} {# Include the Django RecipeForm #}
                 <div class="form-group section-padding">
                     <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button> {# Add the reset button #}
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    function resetForm() {
+        document.getElementById("addRecipeForm").reset(); // Reset the form by its ID
+        
+       
+        //reset each textarea field to an empty string
+        var textareas = document.getElementById("addRecipeForm").getElementsByTagName("textarea");
+        for (var i = 0; i < textareas.length; i++) {
+            textareas[i].value = "";
+        }
+    }
+</script>
 {% endblock %}
 </body>
 </html>
