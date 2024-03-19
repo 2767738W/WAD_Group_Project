@@ -12,27 +12,22 @@ from django.core.exceptions import ValidationError
 class RecipeForm(forms.ModelForm):
     name = forms.CharField(
         max_length=Recipe.NAME_MAX_LENGTH,
-        help_text="Please enter the Recipe name.",
         label="Recipe Name",
         widget=forms.TextInput(attrs={'placeholder': 'Enter Recipe Name'})
     )
     cuisine = forms.ChoiceField(
         choices=Recipe.CUISINE_CHOICES,
-        help_text="Please select a cuisine.",
         label="Cuisine"
     )
     ingredients = forms.CharField(
         widget=forms.Textarea(attrs={'placeholder': 'Enter ingredients'}),
-        help_text="Please enter the ingredients.",
         label="Ingredients"
     )
     instructions = forms.CharField(
         widget=forms.Textarea(attrs={'placeholder': 'Enter instructions'}),
-        help_text="Please enter the instructions.",
         label="Instructions"
     )
     image = forms.ImageField(
-        help_text="Please upload a picture of your recipe.",
         label="Add Photo"
     )
 
@@ -43,12 +38,11 @@ class RecipeForm(forms.ModelForm):
         
 
 class UserForm(forms.ModelForm):
-
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
     forename = forms.CharField(max_length=128)
     surname = forms.CharField(max_length=128)
-    dateOfBirth = forms.DateField(label="Date of Birth", required=True)
+    dateOfBirth = forms.DateField(label="Date of Birth  (YYYY-MM-DD)", input_formats=['%Y-%m-%d'])
     email = forms.EmailField()
 
     class Meta:
@@ -65,7 +59,8 @@ class UserForm(forms.ModelForm):
 
         if password and confirm_password and password != confirm_password:
             raise ValidationError("Passwords do not match.")
-
+        
+    
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
