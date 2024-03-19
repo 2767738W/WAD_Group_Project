@@ -207,7 +207,6 @@ def rate_recipe(request):
             # Retrieve the UserProfile associated with the authenticated user
             user_profile = request.user.userprofile
             
-            # Create a new starRating object
             star_rating = starRating.objects.create(userID=user_profile, recipeID=recipe, rating=rating)
             
             # Recalculate the average rating of the recipe
