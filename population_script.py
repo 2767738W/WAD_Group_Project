@@ -7,8 +7,36 @@ from wad.models import Recipe, UserProfile, starRating
 from django.contrib.auth.models import User
 from django.core.files import File
 
+from faker import Faker
 
+# Create an instance of Faker to generate fake user data
+fake = Faker()
 
+def create_user_profile():
+    # Generate fake user data
+    forename = fake.first_name()
+    surname = fake.last_name()
+    date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=80)
+    email = fake.email()
+    website = fake.url()
+    picture = None  # You can add logic here to generate a fake picture if needed
+
+    # Create a new User instance
+    user = User.objects.create(username=fake.user_name(), email=email)
+    user.set_password('password')  # Set a default password for simplicity, you may want to change this
+
+    # Create UserProfile instance and save to the database
+    user_profile = UserProfile.objects.create(
+        user=user,
+        forename=forename,
+        surname=surname,
+        dateOfBirth=date_of_birth,
+        email=email,
+        website=website,
+        picture=picture
+    )
+
+    return user_profile
 
 def populate():
     add_user()
@@ -345,7 +373,204 @@ def populate():
     ]
 
     add_recipes(recipes)
+    
+    
+    star_ratings = [
+        {
+            'recipe': 'Spaghetti Bolognese',
+            'rating': 5
+        },
+        {
+            'recipe': 'Spaghetti Bolognese',
+            'rating': 4
+        },
+        {
+            'recipe': 'Spaghetti Bolognese',
+            'rating': 2
+        },
+        {
+            'recipe': 'Spaghetti Bolognese',
+            'rating': 5
+        },
+        {
+            'recipe': 'Cacio e Pepe',
+            'rating': 3
+        },
+        {
+            'recipe': 'Cacio e Pepe',
+            'rating': 5
+        },
+        {
+            'recipe': 'Cacio e Pepe',
+            'rating': 3
+        },
+        {
+            'recipe': 'Cacio e Pepe',
+            'rating': 2
+        },
+        {
+            'recipe': 'Minestrone Soup',
+            'rating': 1
+        },
+        {
+            'recipe': 'Minestrone Soup',
+            'rating': 2
+        },
+        {
+            'recipe': 'Minestrone Soup',
+            'rating': 4
+        },
+        {
+            'recipe': 'Minestrone Soup',
+            'rating': 4
+        },
+        {
+            'recipe': 'Chicken Noodle Soup',
+            'rating': 4
+        },
+        {
+            'recipe': 'Chicken Noodle Soup',
+            'rating': 3
+        },
+        {
+            'recipe': 'Chicken Noodle Soup',
+            'rating': 3
+        },
+        {
+            'recipe': 'Chicken Noodle Soup',
+            'rating': 1
+        },
+        {
+            'recipe': 'Chinese Chicken Curry',
+            'rating': 4
+        },
+        {
+            'recipe': 'Chinese Chicken Curry',
+            'rating': 4
+        },
+        {
+            'recipe': 'Chinese Chicken Curry',
+            'rating': 4
+        },
+        {
+            'recipe': 'Chinese Chicken Curry',
+            'rating': 3
+        },
+        {
+            'recipe': 'Char Siu',
+            'rating': 5
+        },
+        {
+            'recipe': 'Char Siu',
+            'rating': 1
+        },
+        {
+            'recipe': 'Char Siu',
+            'rating': 1
+        },
+        {
+            'recipe': 'Char Siu',
+            'rating': 5
+        },
+        {
+            'recipe': 'Butter Chicken',
+            'rating': 5
+        },
+        {
+            'recipe': 'Butter Chicken',
+            'rating': 3
+        },
+        {
+            'recipe': 'Butter Chicken',
+            'rating': 3
+        },
+        {
+            'recipe': 'Butter Chicken',
+            'rating': 3
+        },
+        {
+            'recipe': 'Spiced Paneer',
+            'rating': 5
+        },
+        {
+            'recipe': 'Spiced Paneer',
+            'rating': 2
+        },
+        {
+            'recipe': 'Spiced Paneer',
+            'rating': 2
+        },
+        {
+            'recipe': 'Spiced Paneer',
+            'rating': 3
+        },
+        {
+            'recipe': 'Saag Aloo',
+            'rating': 4
+        },
+        {
+            'recipe': 'Saag Aloo',
+            'rating': 4
+        },
+        {
+            'recipe': 'Saag Aloo',
+            'rating': 1
+        },
+        {
+            'recipe': 'Saag Aloo',
+            'rating': 4
+        },
+        {
+            'recipe': 'Thai Red Curry',
+            'rating': 4
+        },
+        {
+            'recipe': 'Thai Red Curry',
+            'rating': 5
+        },
+        {
+            'recipe': 'Thai Red Curry',
+            'rating': 5
+        },
+        {
+            'recipe': 'Thai Red Curry',
+            'rating': 4
+        },
+        {
+            'recipe': 'Thai Green Curry',
+            'rating': 4
+        },
+        {
+            'recipe': 'Thai Green Curry',
+            'rating': 5
+        },
+        {
+            'recipe': 'Thai Green Curry',
+            'rating': 5
+        },
+        {
+            'recipe': 'Thai Green Curry',
+            'rating': 5
+        },
+        {
+            'recipe': 'Pad Thai',
+            'rating': 4
+        },
+        {
+            'recipe': 'Pad Thai',
+            'rating': 2
+        },
+        {
+            'recipe': 'Pad Thai',
+            'rating': 4
+        },
+        {
+            'recipe': 'Pad Thai',
+            'rating': 4
+        }
+    ]
 
+    add_star_ratings(star_ratings)
 
 
 
@@ -382,6 +607,27 @@ def add_recipes(recipes):
             else:
                 print(f"Recipe '{recipe.name}' already exists.")
     
+    
+
+
+def add_star_ratings(star_ratings):    
+    for rating_data in star_ratings:
+        user_profile = create_user_profile()
+        
+        recipe = Recipe.objects.get(name=rating_data["recipe"])
+        
+        rating, created = starRating.objects.get_or_create(
+            userID = user_profile,
+            recipeID = recipe,
+            rating = rating_data["rating"]
+        )
+        
+        if created:
+            print(f"{rating.rating} star rating added for {rating_data['recipe']}")
+        else:
+            print("rating exists")
+        
+        
 
 def add_user():
     username = 'michaelwoods15'

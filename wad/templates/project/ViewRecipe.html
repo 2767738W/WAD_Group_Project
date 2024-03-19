@@ -17,19 +17,6 @@
             display: flex;
             align-items: center; 
         }
-
-        .recipe-photo {
-            width: 40%; 
-            margin-right: 20px; 
-        }
-        
-        .recipe-photo img {
-            max-width: 100%;  /* ensures the image is no wider than its container */
-            max-height: 400px; /* replace 400px with the maximum height you want */
-            width: auto;       /* ensures the width scales with the height */
-            height: auto;      /* maintains the aspect ratio */
-            display: block;    /* prevents inline spacing */
-        }
         
 
         .recipe-details {
@@ -89,7 +76,7 @@
                 <div class="recipe-container">
                     <div class="recipe-photo">
                         <!-- Add your photo here -->
-                        <img src="{% load static %}{% get_media_prefix %}{{ recipe.image }}" alt="Recipe Photo">
+                        <img src="{% load static %}{% get_media_prefix %}{{ recipe.image }}" alt="Recipe Photo" style="max-width: 400px; max-height: 400px;">
                         <div class="star-rating">
                         </div>
                     </div>
