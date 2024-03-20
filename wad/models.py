@@ -77,10 +77,6 @@ class starRating(models.Model):
         ]
     )
     
-    
-    class Meta:
-        unique_together = ('userID', 'recipeID')
-
 
     def __str__(self):
         return f"{self.userID} - {self.recipeID} - {self.rating}"
