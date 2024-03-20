@@ -56,6 +56,7 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Submit Rating</button>
                         </form>
+                        <div id="error-container" style="color: red;"></div>
                     {% else %}
                         <p>If you want to leave a review, please sign up <a href="{% url 'wad:register' %}">here</a> and then <a href="{% url 'wad:login' %}">login</a> to start submitting ratings.</p>
                     {% endif %}
@@ -81,6 +82,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ratingForm = document.getElementById('ratingForm');
+    const errorContainer = document.getElementById('error-container'); // Define errorContainer here
 
     ratingForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -94,11 +96,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const scrollY = window.scrollY;
 
-        rateRecipe(recipeId, rating, scrollY);
+        rateRecipe(recipeId, rating, scrollY, errorContainer);
 
     });
 
-    function rateRecipe(recipeId, rating, scrollY) {
+    function rateRecipe(recipeId, rating, scrollY, errorContainer) {
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
         fetch("{% url 'wad:raterecipe' %}", {
@@ -111,19 +113,23 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.message) {
+            if (data.error) {
+                errorContainer.textContent = data.error;
+            } else {
                 console.log(data.message);
                 const avgRatingElement = document.getElementById('average-rating');
                 avgRatingElement.textContent = data.avg_rating;
 
                 window.scrollTo(0, scrollY);
-            } else {
-                console.error('Error:', data.error);
             }
         })
+        .catch(error => {
+            console.error('Error submitting rating:', error);
+        });
 
     }
 });
+
 </script>
 
 </body>

@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title_block %}
-<title>Indain Page</title>
+<title>Indian Page</title>
 {% endblock %}
 
 {% block heading_block %}
@@ -10,7 +10,7 @@ Indian
 {% endblock %}
 
 {% block body_block %}
-<p class="col-md-8 fs-4">This is where you can add or view Indain recipes! Compare your recipes to others and leave a star rating and have other rate yours!</p>
+<p class="col-md-8 fs-4">This is where you can add or view Indian recipes! Compare your recipes to others, leave a star rating and have others rate yours!</p>
 {% if user.is_authenticated %}
   <a href="{% url 'wad:addrecipe' %}" class="btn btn-primary mb-4">Add Recipe</a>
 {% else %}
@@ -26,10 +26,12 @@ Indian
       <ul class="list-group mt-3 mb-3" id="recipeList">
         {% if recipes %}
             {% for recipe in recipes %}
-                <li class="list-group-item"><a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a></li>
+                <li class="list-group-item" data-ingredients="{{ recipe.ingredients }}">
+                    <a href="{% url 'wad:view_recipe' recipe.cuisine recipe.slug %}">{{ recipe.name }}</a>
+                </li>
             {% endfor %}
         {% else %}
-            <li class="list-group-item">Sorry we don't have any Thai recipes yet. Please register and add some</li>
+            <li class="list-group-item">Sorry we don't have any Indian recipes yet. Please register and add some</li>
         {% endif %}
       </ul>
     </div>
@@ -60,8 +62,8 @@ Indian
     }
   }
 
-  // Function to filter recipes by ingredients
-  function filterIngredients() {
+ // Function to filter recipes by ingredients
+ function filterIngredients() {
     var input, filter, ul, li, ingredients, i;
     input = document.getElementById('ingredientsInput');
     filter = input.value.toUpperCase();

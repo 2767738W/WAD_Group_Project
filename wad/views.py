@@ -178,6 +178,10 @@ def rate_recipe(request):
     if rating is not None and recipe_id is not None:
         recipe = get_object_or_404(Recipe, id=recipe_id)
         user_profile = request.user.userprofile
+
+        if starRating.objects.filter(userID=user_profile, recipeID=recipe).exists():
+                return JsonResponse({'error': 'You have already rated this recipe'}, status=400)
+        
         star_rating = starRating.objects.create(userID=user_profile, recipeID=recipe, rating=rating)
         avg_rating = recipe.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
         return render(request, 'project/ViewRecipe.html', {'recipe': recipe, 'avg_rating': avg_rating})
