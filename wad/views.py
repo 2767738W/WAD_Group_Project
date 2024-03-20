@@ -176,10 +176,15 @@ def rate_recipe(request):
         recipe = get_object_or_404(Recipe, id=recipe_id)
         user_profile = request.user.userprofile
 
+        if recipe.user == user_profile:
+            message = message = f"You cannot rate your own recipe. Head over to the <a href='{reverse('wad:home')}'>homepage</a> or the <a href='{reverse('wad:cuisine')}'>cuisine page</a> and leave some feedback on other recipes."
+
+            return HttpResponse(message)
+
         if starRating.objects.filter(userID=user_profile, recipeID=recipe).exists():
             cuisine_name = recipe.cuisine
-            cuisine_url = reverse('wad:' + cuisine_name.lower())
             homepage_url = reverse('wad:home')
+            cuisine_url = reverse('wad:' + cuisine_name.lower())
             message = f'You have already rated this recipe. Head back to the <a href="{homepage_url}">homepage</a> or the <a href="{cuisine_url}">{cuisine_name}</a> page to view and rate more recipes.'
             return HttpResponse(message)
         
