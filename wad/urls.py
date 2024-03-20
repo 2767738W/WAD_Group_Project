@@ -1,6 +1,6 @@
 from django.urls import path
 from wad.views import (
-    home, RegisterView, UserLoginView, UserLogoutView, CuisineView,
+    home,RegisterView, UserLoginView, UserLogoutView, CuisineView,
     ItalianView, ChineseView, ThaiView, IndianView, AddRecipeView,
     ViewRecipeView, MyRecipesView, rate_recipe, RecipeDeleteView
 )
@@ -26,7 +26,6 @@ urlpatterns = [
     path('raterecipe/', rate_recipe, name='raterecipe'),
     path('recipes/<int:pk>/delete/', RecipeDeleteView.as_view(), name='recipe_delete'),
 ]
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

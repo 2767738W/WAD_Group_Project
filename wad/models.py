@@ -10,13 +10,10 @@ from uuid import uuid4
 
 
 def user_directory_path(instance, filename):
-    # Get the file extension
     _, ext = os.path.splitext(filename)
     
-    # Generate a unique filename using UUID
     unique_filename = f"{uuid4()}{ext}"
 
-    # Return the path to the upload location
     return unique_filename
 
 
@@ -57,7 +54,6 @@ class Recipe(models.Model):
     slug = models.SlugField(unique=True)
 
     def avg_star_rating(self):
-        # Calculate the average rating using aggregation
         avg_rating = self.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating']
         return avg_rating if avg_rating is not None else 0
 
@@ -84,15 +80,10 @@ class starRating(models.Model):
 
     def __str__(self):
         return f"{self.userID} - {self.recipeID} - {self.rating}"
-    
-    
-    
-    
 
 @receiver(post_save, sender=starRating)
 def update_recipe_avg_rating(sender, instance, created, **kwargs):
     if created:
-        # If a new rating is created, update the average rating of the associated recipe
         avg_rating = instance.recipeID.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
         instance.recipeID.avg_star_rating = avg_rating
         instance.recipeID.save()
