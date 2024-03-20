@@ -75,10 +75,17 @@ class starRating(models.Model):
             MaxValueValidator(limit_value=5),
             MinValueValidator(limit_value=0)
         ]
-    )    
+    )
+    
+    
+    class Meta:
+        unique_together = ('userID', 'recipeID')
+
 
     def __str__(self):
-        return f"{self.user} - {self.recipe} - {self.rating}"
+        return f"{self.userID} - {self.recipeID} - {self.rating}"
+    
+    
     
     
 

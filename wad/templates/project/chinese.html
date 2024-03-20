@@ -11,7 +11,12 @@ Chinese
 
 {% block body_block %}
 <p class="col-md-8 fs-4">This is where you can add or view Chinese recipes! Compare ypur recipes to others and leave a star rating and have others rate yours!</p>
-<a href="{% url 'wad:addrecipe' %}" class = 'btn btn-primary mb-4'>Add Recipe</a>
+{% if user.is_authenticated %}
+  <a href="{% url 'wad:addrecipe' %}" class="btn btn-primary mb-4">Add Recipe</a>
+{% else %}
+  <p class="col-md-8 fs-4">Please login to start adding recipes.</p>
+  <a href="{% url 'wad:login' %}" class="btn btn-primary mb-4">Login</a>
+{% endif %}
 
 <div class="row align-items-md-stretch">
   <div class="col-md-6">

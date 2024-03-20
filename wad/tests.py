@@ -83,7 +83,7 @@ class TestViews(TestCase):
             'cuisine': 'italian',
             'ingredients': 'Test ingredient 1, Test ingredient 2',
             'instructions': 'Test instructions',
-            'image': image_path_source,  # You may need to provide a file for image field
+            'image': image_path_source,  
         }
         response = self.client.post(reverse('wad:addrecipe'), data, format='multipart')
         self.assertTrue(Recipe.objects.filter(name='Test Recipe').exists())

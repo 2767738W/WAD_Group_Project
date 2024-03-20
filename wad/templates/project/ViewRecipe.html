@@ -59,7 +59,7 @@
                             <button type="submit" class="btn btn-primary">Submit Rating</button>
                         </form>
                     {% else %}
-                        <p>Only logged in users can provide ratings feedback. Sign up <a href="{% url 'wad:register' %}">here</a> and then <a href="{% url 'wad:login' %}">login</a> to start submitting ratings.</p>
+                        <p>If you want to leave a review, please sign up <a href="{% url 'wad:register' %}">here</a> and then <a href="{% url 'wad:login' %}">login</a> to start submitting ratings.</p>
                     {% endif %}
                     
                     <div class="recipe-details">
