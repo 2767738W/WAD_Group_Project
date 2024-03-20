@@ -55,7 +55,10 @@ class Recipe(models.Model):
 
     def avg_star_rating(self):
         avg_rating = self.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating']
-        return avg_rating if avg_rating is not None else 0
+        if avg_rating is None:
+            return "Not rated yet"
+        else: 
+            return avg_rating
 
     def save(self, *args, **kwargs):
         if not self.slug:
