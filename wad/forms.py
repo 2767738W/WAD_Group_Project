@@ -2,13 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from wad.models import UserProfile,Recipe, starRating
 from django.core.exceptions import ValidationError
-
-
-
-#need form for recipes to collect information submitted by users adding recipes
-#also need form for users leaving ratings, should link to the starRating model as that is where ratings are stored
-
-        
+ 
 class RecipeForm(forms.ModelForm):
     name = forms.CharField(
         max_length=Recipe.NAME_MAX_LENGTH,
@@ -66,6 +60,8 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('website', 'picture',)
+
+
 
 class RatingForm(forms.ModelForm):
     class Meta:

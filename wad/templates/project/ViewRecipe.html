@@ -34,12 +34,10 @@
                 <h2>View Recipe</h2>
                 <div class="recipe-container">
                     <div class="recipe-photo">
-                        <!-- Add your photo here -->
                         <img src="{% load static %}{% get_media_prefix %}{{ recipe.image }}" alt="Recipe Photo" style="max-width: 400px; max-height: 400px;">
                         <div class="star-rating">
                         </div>
                     </div>
-                    <!-- Rating form -->
                     {% if user.is_authenticated %}
                         <form id="ratingForm" method="post" action="{% url 'wad:raterecipe' %}">
                             {% csrf_token %}
@@ -70,7 +68,7 @@
                         <h3>How to Make:</h3>
                         <p>{{ recipe.instructions }}</p>
                         <h3>Average Rating:</h3>
-                        <p id="average-rating">{{ recipe.avg_star_rating }}</p>
+                        <p id="average-rating">{{ recipe.avg_star_rating|floatformat:"2" }}/5</p>
                     </div>
                 </div>
             </div>
@@ -85,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ratingForm = document.getElementById('ratingForm');
 
     ratingForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission behavior
+        event.preventDefault();
 
         const formData = new FormData(ratingForm);
         const recipeId = formData.get('recipeID');

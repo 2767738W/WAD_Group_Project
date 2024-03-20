@@ -2,19 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DeleteView
-from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
-from django.utils.decorators import method_decorator
-from wad.forms import RecipeForm, UserForm, UserProfileForm, RatingForm
+from wad.forms import RecipeForm, UserForm, UserProfileForm
 from wad.models import Recipe, UserProfile, starRating
 
 
-#class HomeView(View):
 def home(request):
     top_ten_recipes = Recipe.objects.annotate(avg_rating=Avg('starrating__rating')).order_by('-avg_rating')[:10]
     return render(request, 'project/home.html', {'recipes': top_ten_recipes})
@@ -88,7 +84,6 @@ class AddRecipeView(View):
         if form.is_valid():
             recipe = form.save(commit=False)
             
-            # Assuming you want to associate the recipe with the currently logged-in user
             if request.user.is_authenticated:
                 user_profile = request.user.userprofile
                 recipe.user = user_profile
@@ -177,30 +172,18 @@ class MyRecipesView(View):
 
 @login_required
 def rate_recipe(request):
-    if request.method == 'POST':
-        rating = request.POST.get('rating')
-        recipe_id = request.POST.get('recipeID')
+    rating = request.POST.get('rating')
+    recipe_id = request.POST.get('recipeID')
 
-        if rating is not None and recipe_id is not None:
-            # Retrieve the Recipe object
-            recipe = get_object_or_404(Recipe, id=recipe_id)
-            
-            # Retrieve the UserProfile associated with the authenticated user
-            user_profile = request.user.userprofile
-            
-            star_rating = starRating.objects.create(userID=user_profile, recipeID=recipe, rating=rating)
-            
-            # Recalculate the average rating of the recipe
-            avg_rating = recipe.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
-            
-            return render(request, 'project/ViewRecipe.html', {'recipe': recipe, 'avg_rating': avg_rating})
-        else:
-            return JsonResponse({'error': 'Rating or Recipe ID missing'}, status=400)
+    if rating is not None and recipe_id is not None:
+        recipe = get_object_or_404(Recipe, id=recipe_id)
+        user_profile = request.user.userprofile
+        star_rating = starRating.objects.create(userID=user_profile, recipeID=recipe, rating=rating)
+        avg_rating = recipe.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
+        return render(request, 'project/ViewRecipe.html', {'recipe': recipe, 'avg_rating': avg_rating})
     else:
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
-
-
-        
+        return JsonResponse({'error': 'Rating or Recipe ID missing'}, status=400)
+ 
 
 class RecipeDeleteView(DeleteView):
     model = Recipe
