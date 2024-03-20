@@ -58,7 +58,6 @@ class ThaiView(View):
         return render(request, 'project/thai.html', context=context_dict)
         
 
-
 class IndianView(View):
     def get(self, request):
         context_dict = {}
@@ -115,8 +114,6 @@ class ViewRecipeView(View):
         return render(request, 'project/ViewRecipe.html', context=context_dict)
     
         
-
-
 class UserLoginView(View):
     def get(self, request):
         return render(request, 'project/login.html')
@@ -180,14 +177,18 @@ def rate_recipe(request):
         user_profile = request.user.userprofile
 
         if starRating.objects.filter(userID=user_profile, recipeID=recipe).exists():
-                return JsonResponse({'error': 'You have already rated this recipe'}, status=400)
+            cuisine_name = recipe.cuisine
+            cuisine_url = reverse('wad:' + cuisine_name.lower())
+            homepage_url = reverse('wad:home')
+            message = f'You have already rated this recipe. Head back to the <a href="{homepage_url}">homepage</a> or the <a href="{cuisine_url}">{cuisine_name}</a> page to view and rate more recipes.'
+            return HttpResponse(message)
         
         star_rating = starRating.objects.create(userID=user_profile, recipeID=recipe, rating=rating)
         avg_rating = recipe.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
         return render(request, 'project/ViewRecipe.html', {'recipe': recipe, 'avg_rating': avg_rating})
     else:
         return JsonResponse({'error': 'Rating or Recipe ID missing'}, status=400)
- 
+
 
 class RecipeDeleteView(DeleteView):
     model = Recipe

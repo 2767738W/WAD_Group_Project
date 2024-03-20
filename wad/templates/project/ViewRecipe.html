@@ -56,7 +56,6 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Submit Rating</button>
                         </form>
-                        <div id="error-container" style="color: red;"></div>
                     {% else %}
                         <p>If you want to leave a review, please sign up <a href="{% url 'wad:register' %}">here</a> and then <a href="{% url 'wad:login' %}">login</a> to start submitting ratings.</p>
                     {% endif %}
@@ -82,7 +81,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ratingForm = document.getElementById('ratingForm');
-    const errorContainer = document.getElementById('error-container'); // Define errorContainer here
 
     ratingForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -96,11 +94,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const scrollY = window.scrollY;
 
-        rateRecipe(recipeId, rating, scrollY, errorContainer);
+        rateRecipe(recipeId, rating, scrollY);
 
     });
 
-    function rateRecipe(recipeId, rating, scrollY, errorContainer) {
+    function rateRecipe(recipeId, rating, scrollY) {
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
         fetch("{% url 'wad:raterecipe' %}", {
@@ -113,8 +111,9 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             if (data.error) {
-                errorContainer.textContent = data.error;
+                console.error('Error:', data.error);
             } else {
                 console.log(data.message);
                 const avgRatingElement = document.getElementById('average-rating');
