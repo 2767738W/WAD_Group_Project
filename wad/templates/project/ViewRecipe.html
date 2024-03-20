@@ -12,48 +12,7 @@
             Unknown Recipe
         {% endif %}
     {% endblock %}
-    <style>
-        .recipe-container {
-            display: flex;
-            align-items: center; 
-        }
-        
-
-        .recipe-details {
-            width: 60%; 
-        }
-
-        .recipe-details h3 {
-            margin-top: 0; 
-        }
-
-        /* Hide radio buttons */
-        .star-rating input {
-            display: none;
-        }
-
-        /* Style the label for the radio buttons to look like stars */
-        .star-rating label {
-            font-size: 24px; /* Adjust size as needed */
-            cursor: pointer;
-            color: #ccc; /* Default star color */
-        }
-
-        .star-rating input:checked + label::before {
-            content: '★'; /* Filled star */
-            color: gold; /* Yellow color */
-        }
-
-        .star-rating label::before {
-            content: '☆'; /* Empty star */
-            color: #ccc; /* Default star color */
-        }
-
-        /* Highlight stars based on button click */
-        .star-rating label.active::before {
-            color: gold; /* Yellow color */
-        }
-    </style>
+    
     {% block additionalhead %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'wad/css/sideBar.css' %}">
@@ -81,23 +40,27 @@
                         </div>
                     </div>
                     <!-- Rating form -->
-                    <form id="ratingForm" method="post" action="{% url 'wad:raterecipe' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="recipeID" value="{{ recipe.id }}">
-                        <div class="star-rating">
-                            <input type="radio" id="star5" name="rating" value="5">
-                            <label for="star5">☆</label>
-                            <input type="radio" id="star4" name="rating" value="4">
-                            <label for="star4">☆</label>
-                            <input type="radio" id="star3" name="rating" value="3">
-                            <label for="star3">☆</label>
-                            <input type="radio" id="star2" name="rating" value="2">
-                            <label for="star2">☆</label>
-                            <input type="radio" id="star1" name="rating" value="1">
-                            <label for="star1">☆</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit Rating</button>
-                    </form>
+                    {% if user.is_authenticated %}
+                        <form id="ratingForm" method="post" action="{% url 'wad:raterecipe' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="recipeID" value="{{ recipe.id }}">
+                            <div class="star-rating">
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1">☆</label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2">☆</label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3">☆</label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4">☆</label>
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5">☆</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Rating</button>
+                        </form>
+                    {% else %}
+                        <p>Only logged in users can provide ratings feedback. Sign up <a href="{% url 'wad:register' %}">here</a> and then <a href="{% url 'wad:login' %}">login</a> to start submitting ratings.</p>
+                    {% endif %}
                     
                     <div class="recipe-details">
                         <h3>Recipe Name:</h3>
@@ -107,7 +70,7 @@
                         <h3>How to Make:</h3>
                         <p>{{ recipe.instructions }}</p>
                         <h3>Average Rating:</h3>
-                        <p>{{ recipe.avg_star_rating }}</p>
+                        <p id="average-rating">{{ recipe.avg_star_rating }}</p>
                     </div>
                 </div>
             </div>
@@ -131,10 +94,13 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Recipe ID:", recipeId);
         console.log("Rating:", rating);
 
-        rateRecipe(recipeId, rating);
+        const scrollY = window.scrollY;
+
+        rateRecipe(recipeId, rating, scrollY);
+
     });
 
-    function rateRecipe(recipeId, rating) {
+    function rateRecipe(recipeId, rating, scrollY) {
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
         fetch("{% url 'wad:raterecipe' %}", {
@@ -145,19 +111,19 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({ rating: rating, recipeID: recipeId })
         })
-        .then(response => {
-            if (response.ok) {
-                console.log('Rating submitted successfully');
-                // Update the page content as needed (e.g., display a success message)
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                console.log(data.message);
+                const avgRatingElement = document.getElementById('average-rating');
+                avgRatingElement.textContent = data.avg_rating;
+
+                window.scrollTo(0, scrollY);
             } else {
-                console.error('Error submitting rating:', response.statusText);
-                // Handle error (e.g., display an error message)
+                console.error('Error:', data.error);
             }
         })
-        .catch(error => {
-            console.error('Error submitting rating:', error);
-            // Handle error (e.g., display an error message)
-        });
+
     }
 });
 </script>

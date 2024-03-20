@@ -193,7 +193,7 @@ def rate_recipe(request):
             # Recalculate the average rating of the recipe
             avg_rating = recipe.starrating_set.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
             
-            return JsonResponse({'message': 'Rating submitted successfully', 'avg_rating': avg_rating})
+            return render(request, 'project/ViewRecipe.html', {'recipe': recipe, 'avg_rating': avg_rating})
         else:
             return JsonResponse({'error': 'Rating or Recipe ID missing'}, status=400)
     else:
